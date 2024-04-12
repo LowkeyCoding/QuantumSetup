@@ -50,7 +50,7 @@ If you prefer to use the Aer simulator provided by Qiskit for local simulations,
 
 #### Azure Backend
 
-If you prefer to use the Azure simulator provided by Qiskit for local simulations, switch to the `azure_backend` branch. Refer to the instructions in that branch's README for setup and usage.
+If you want to use Azure Quantum hardware or simulators provided by Azure, switch to the `azure_backend` branch. Refer to the instructions in that branch's README for setup and usage.
 
 [Azure Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/tree/azure_backend)
 
