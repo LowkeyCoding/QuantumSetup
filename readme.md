@@ -33,10 +33,16 @@ from azure.quantum.qiskit import AzureQuantumProvider
 provider = AzureQuantumProvider(resource_id=os.environ['resource_id'], location=os.environ['azure_location'])
 ```
 ## Windows
+For command prompt
 ```bash
-set resource_id=YOUR ID HERE
-set azure_location=YOUR LOCATION HERE
+set resource_id="YOUR ID HERE"
+set azure_location="YOUR LOCATION HERE"
 ```
+For powershell
+```bash
+$Env:resource_id = "YOUR ID HERE"
+$Env:azure_location = "YOUR LOCATION HERE"
+``` 
 ## Unix/Mac
 ```bash
 export resource_id=YOUR ID HERE
