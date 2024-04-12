@@ -1,22 +1,19 @@
-# Step 1: Setup Environment
+# Step 1: Setup the Backend
 
 If you're using Windows, open Command Prompt (cmd.exe) or PowerShell. If you're using Unix-based systems like Linux or macOS, open Terminal.
-Run the following command to install Qiskit and other required dependencies:
+Run the following command to install the ibm backend and other required dependencies:
 
 ## Windows
 ```
-py -m venv .venv
 .venv\Scripts\activate
-py -m pip install -r requirements.txt
+py -m pip install qiskit-ibm-runtime
 ```
 
 ## Unix
 
 ```
-python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-python3 -m pip install -r requirements.txt
+python3 -m pip install qiskit-ibm-runtime
 ```
 
 # Step 2: Get API Key from IBM Quantum Dashboard
@@ -28,4 +25,4 @@ Copy your API key. This will be used to authenticate your access to IBM Quantum 
 ![alt text](./images/api_key.png "Title")
 Paste your API key into the `save_account.py` file then run it. It is important that you never run it on untrusted systems and NEVER publish the `save_account.py` with the api key in it. After running it once on a system the account will automatically be used when using the IBM backend.
 
-With these two steps completed, you'll have Qiskit installed and configured to use IBM Quantum hardware. You can then start experimenting with quantum circuits and running them on real quantum computers provided by IBM.
+With these two steps completed, you'll have the ibm backend installed and configured to use IBM Quantum hardware. You can then start experimenting with quantum circuits and running them on real quantum computers provided by IBM.
