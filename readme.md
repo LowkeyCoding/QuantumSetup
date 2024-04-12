@@ -23,14 +23,19 @@ To find the `Resource ID` and `Location` go to [azure portal](https://portal.azu
 # Step 3: Loginin from python.
 To log in, use the Python snippet below, but you must never share the resource_id on GitHub or any other public site. 
 ```python
+from azure.quantum import Workspace
 from azure.quantum.qiskit import AzureQuantumProvider
-provider = AzureQuantumProvider(resource_id="ID HERE", location="LOCATION HERE")
+workspace = Workspace(resource_id="ID HERE", location="LOCATION HERE")
+provider = AzureQuantumProvider(workspace)
 ```
 One way to avoid this is by using environment variables, as seen below, for Windows and Unix.
 ```python
 import os
+from azure.quantum import Workspace
 from azure.quantum.qiskit import AzureQuantumProvider
-provider = AzureQuantumProvider(resource_id=os.environ['resource_id'], location=os.environ['azure_location'])
+
+workspace = Workspace(resource_id=os.environ['resource_id'], location=os.environ['azure_location'])
+provider = AzureQuantumProvider(workspace)
 ```
 ## Windows
 For command prompt
@@ -78,6 +83,7 @@ This workspace's targets:
 # Step 5: Running a quantum circuit.
 To run a quantum circuit a specific backend has to be chosen from the list of currently available ones. This is done by getting the backend from the provider `backend = provider.get_backend("ionq.simulator")` as seen in the example below. It is important to always test programs on the simulator first and, in general, limit the usage of real hardware as the cost adds up extremely quickly.
 ```python
+from azure.quantum import Workspace
 from azure.quantum.qiskit import AzureQuantumProvider
 from qiskit import QuantumCircuit
 from qiskit.visualization import plot_histogram
@@ -85,8 +91,9 @@ from qiskit import transpile
 from matplotlib import pyplot
 
 # It is highly recommended to use environment variables.
-#provider = AzureQuantumProvider(resource_id="ID HERE", location="LOCATION HERE")
-provider = AzureQuantumProvider(resource_id=os.environ['resource_id'], location=os.environ['azure_location'])
+workspace = Workspace(resource_id=os.environ['resource_id'], location=os.environ['azure_location'])
+#workspace = Workspace(resource_id="ID HERE", location="LOCATION HERE")
+provider = AzureQuantumProvider(workspace)
 # Selecting a backend
 # Use simulators to test before running it on real hardware.
 backend = provider.get_backend("ionq.simulator")
