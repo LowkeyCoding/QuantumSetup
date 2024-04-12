@@ -75,6 +75,12 @@ After installing the Python package, you'll also need to install the Jupyter ext
 Once you have selected the appropriate branch, followed the instructions provided in the README of that branch to set up your environment and run the code.
 
 
+## Helpful resources
+* [**Python Documentation**](https://docs.python.org/3.12/)
+* [**Qiskit Documentation**](https://docs.quantum.ibm.com/)
+* [**Matplotlib Documentation**](https://matplotlib.org/stable/index.html)
+* [**Numpy Documentation**](https://numpy.org/devdocs/)
+
 ## Contributing
 
 Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request.
