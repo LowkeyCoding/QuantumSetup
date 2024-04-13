@@ -84,3 +84,7 @@ Once you have selected the appropriate branch, followed the instructions provide
 ## Contributing
 
 Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request.
+
+## Authors/Contributers
+* [Loke Walsted](https://github.com/Lowkeycoding)
+* [Torben Larsen](https://github.com/t-larsen/)
