@@ -85,7 +85,7 @@ counts = result_sim.get_counts(qc_compiled)
 plot_histogram(counts)
 pyplot.show()
 ```
-The example can also be seen [here](https://github.com/LowkeyCoding/QuantumSetup/blob/ibm_backend/sample_script.py)
+The example can also be seen [here](https://github.com/LowkeyCoding/QuantumSetup/blob/ibm_backend/sample.py)
 
 # Step 5: Running simulator after the 15th of may
 To access advanced simulation capabilities in Qiskit of IBM systems, the `qiskit-aer` package is required.
@@ -117,4 +117,4 @@ real_backend = provider.backend("ibm_brisbane")
 backend = AerSimulator.from_backend(real_backend)
 ```
 
-The full example can be seen [here](https://github.com/LowkeyCoding/QuantumSetup/blob/ibm_backend/sample_script2.py)
+The full example can be seen [here](https://github.com/LowkeyCoding/QuantumSetup/blob/ibm_backend/sample_new.py)
