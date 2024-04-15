@@ -50,7 +50,6 @@ This workspace's targets:
 To run a quantum circuit a specific backend has to be chosen from the list of currently available ones. This is done by getting the backend from the provider `backend = provider.get_backend("simulator_mps")` as seen in the example below. It is important to always test programs on the simulator first and, in general, limit the usage of real hardware as the cost adds up extremely quickly.
 ```python
 from qiskit import QuantumCircuit, transpile
-from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
 from qiskit.visualization import plot_histogram
 from qiskit_ibm_runtime import QiskitRuntimeService
 from matplotlib import pyplot
@@ -86,3 +85,36 @@ counts = result_sim.get_counts(qc_compiled)
 plot_histogram(counts)
 pyplot.show()
 ```
+The example can also be seen [here](https://github.com/LowkeyCoding/QuantumSetup/blob/ibm_backend/sample_script.py)
+
+# Step 5: Running simulator after the 15th of may
+To access advanced simulation capabilities in Qiskit of IBM systems, the `qiskit-aer` package is required.
+
+## Windows
+```
+py -m pip install qiskit_aer
+```
+
+## Unix
+```
+python3 -m pip install qiskit_aer
+```
+
+To run a simulation, it is required to first load the real hardware backend from IBM as in the previous step and then use the backend to instantiate the Aer simulator.
+
+```python
+from qiskit_aer import AerSimulator
+from qiskit import QuantumCircuit, transpile
+from qiskit.visualization import plot_histogram
+from qiskit_ibm_runtime import QiskitRuntimeService
+from matplotlib import pyplot
+
+provider = QiskitRuntimeService()
+
+# Selecting a backend hardware from ibm.,
+real_backend = provider.backend("ibm_brisbane")
+# Instantiate Aer simulator with hardware backend.
+backend = AerSimulator.from_backend(real_backend)
+```
+
+The full example can be seen [here](https://github.com/LowkeyCoding/QuantumSetup/blob/ibm_backend/sample_script2.py)
