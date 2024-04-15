@@ -1,24 +1,36 @@
-from qiskit import QuantumCircuit
+from qiskit import QuantumCircuit, transpile
 from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
-from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
+from qiskit.visualization import plot_histogram
+from qiskit_ibm_runtime import QiskitRuntimeService
+from matplotlib import pyplot
 
-service = QiskitRuntimeService()
+provider = QiskitRuntimeService()
 
-# 1. A quantum circuit for preparing the quantum state (|00> + |11>)/rt{2}
-bell = QuantumCircuit(2)
-bell.h(0)
-bell.cx(0, 1)
-bell.measure_all()
+# Selecting a backend
+# Use simulators to test before running it on real hardware.
+backend = provider.get_backend("simulator_mps")
+# Optionally use where operational means running on hardware.
+#backend = provider.least_busy(operational=False, simulator=True)
 
-# 2: Optimize problem for quantum execution.
-backend = service.least_busy(operational=True, simulator=False)
-pm = generate_preset_pass_manager(backend=backend, optimization_level=1)
-isa_circuit = pm.run(bell)
+circuit = QuantumCircuit(3, 3)
+circuit.name = "My First Quantum Program"
+circuit.h(0)
+circuit.cx(0, 1)
+circuit.cx(1, 2)
+circuit.measure([0,1,2], [0, 1, 2])
 
-# 3. Execute using the Sampler primitive
-sampler = Sampler(backend=backend)
-sampler.options.default_shots = 100  # Options can be set using auto-complete.
-job = sampler.run([isa_circuit])
-print(f"Job ID is {job.job_id()}")
-pub_result = job.result()[0]
-print(f"Counts for the meas output register: {pub_result.data.meas.get_counts()}")
+circuit.draw('mpl')
+
+# Transpile circuit to work with the current backend.
+qc_compiled = transpile(circuit, backend)
+# Run the job
+# This will cause a pop where you have to authenticate with azure.
+job_sim = backend.run(qc_compiled, shots=1024)
+
+# Get the result
+result_sim = job_sim.result()
+counts = result_sim.get_counts(qc_compiled)
+
+# Plot the result
+plot_histogram(counts)
+pyplot.show()

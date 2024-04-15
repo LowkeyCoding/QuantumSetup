@@ -1,22 +1,20 @@
-# Step 1: Setup Environment
+> :warning: **Cloud simulators have been deprecated and will be removed on 15 May 2024.**
+# Step 1: Setup the Backend
 
 If you're using Windows, open Command Prompt (cmd.exe) or PowerShell. If you're using Unix-based systems like Linux or macOS, open Terminal.
-Run the following command to install Qiskit and other required dependencies:
+Run the following command to install the azure backend and other required dependencies:
 
 ## Windows
 ```
-py -m venv .venv
 .venv\Scripts\activate
-py -m pip install -r requirements.txt
+py -m pip install qiskit-ibm-runtime
 ```
 
 ## Unix
 
 ```
-python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-python3 -m pip install -r requirements.txt
+python3 -m pip install qiskit-ibm-runtime
 ```
 
 # Step 2: Get API Key from IBM Quantum Dashboard
@@ -29,3 +27,62 @@ Copy your API key. This will be used to authenticate your access to IBM Quantum 
 Paste your API key into the `save_account.py` file then run it. It is important that you never run it on untrusted systems and NEVER publish the `save_account.py` with the api key in it. After running it once on a system the account will automatically be used when using the IBM backend.
 
 With these two steps completed, you'll have Qiskit installed and configured to use IBM Quantum hardware. You can then start experimenting with quantum circuits and running them on real quantum computers provided by IBM.
+
+# Step 3: Listing accesible backends.
+To list the currently available backends add the snippet below to the login example.
+```python
+print("This workspace's targets:")
+for backend in provider.backends():
+    print("- " + backend.name)
+```
+This should produce a list like the one below.
+```
+This workspace's targets:
+- simulator_mps
+- simulator_statevector
+- simulator_stabilizer
+- ibm_brisbane
+- ibm_osaka
+- ibmq_qasm_simulator
+- simulator_extended_stabilizer
+```
+# Step 4: Running a quantum circuit.
+To run a quantum circuit a specific backend has to be chosen from the list of currently available ones. This is done by getting the backend from the provider `backend = provider.get_backend("simulator_mps")` as seen in the example below. It is important to always test programs on the simulator first and, in general, limit the usage of real hardware as the cost adds up extremely quickly.
+```python
+from qiskit import QuantumCircuit, transpile
+from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+from qiskit.visualization import plot_histogram
+from qiskit_ibm_runtime import QiskitRuntimeService
+from matplotlib import pyplot
+
+provider = QiskitRuntimeService()
+
+# Selecting a backend
+# Use simulators to test before running it on real hardware.
+backend = provider.get_backend("simulator_mps")
+# Optionally use where operational means running on hardware.
+#backend = provider.least_busy(operational=False, simulator=True)
+
+circuit = QuantumCircuit(3, 3)
+circuit.name = "My First Quantum Program"
+circuit.h(0)
+circuit.cx(0, 1)
+circuit.cx(1, 2)
+circuit.measure([0,1,2], [0, 1, 2])
+
+circuit.draw('mpl')
+
+# Transpile circuit to work with the current backend.
+qc_compiled = transpile(circuit, backend)
+# Run the job
+# This will cause a pop where you have to authenticate with azure.
+job_sim = backend.run(qc_compiled, shots=1024)
+
+# Get the result
+result_sim = job_sim.result()
+counts = result_sim.get_counts(qc_compiled)
+
+# Plot the result
+plot_histogram(counts)
+pyplot.show()
+```
