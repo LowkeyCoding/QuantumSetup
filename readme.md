@@ -33,31 +33,27 @@ from azure.quantum.qiskit import AzureQuantumProvider
 workspace = Workspace(resource_id="ID HERE", location="LOCATION HERE")
 provider = AzureQuantumProvider(workspace)
 ```
-One way to avoid this is by using environment variables, as seen below, for Windows and Unix.
+One way to avoid this is by using a `.env` file that is the `.gitignore` to ensure that it is not uploaded to git. The `.env` file should be structured as shown below.
+```ini
+ID=ID HERE
+LOCATION=LOCATION HERE
+```
+Loading the new environment variables is done using the `dotenv` package and the `load_dotenv` function.
+
 ```python
 import os
 from azure.quantum import Workspace
 from azure.quantum.qiskit import AzureQuantumProvider
+from dotenv import load_dotenv
 
-workspace = Workspace(resource_id=os.environ['resource_id'], location=os.environ['azure_location'])
+# Load environment variables 
+load_dotenv()
+
+
+workspace = Workspace(resource_id=os.environ['ID'], location=os.environ['LOCATION'])
 provider = AzureQuantumProvider(workspace)
 ```
-## Windows
-For command prompt
-```bash
-set resource_id="YOUR ID HERE"
-set azure_location="YOUR LOCATION HERE"
-```
-For powershell
-```bash
-$Env:resource_id = "YOUR ID HERE"
-$Env:azure_location = "YOUR LOCATION HERE"
-``` 
-## Unix/Mac
-```bash
-export resource_id=YOUR ID HERE
-export azure_location=YOUR LOCATION HERE
-```
+
 
 # Step 4: Listing accesible backends.
 To list the currently available backends add the snippet below to the login example.
@@ -94,6 +90,10 @@ from qiskit import QuantumCircuit
 from qiskit.visualization import plot_histogram
 from qiskit import transpile
 from matplotlib import pyplot
+from dotenv import load_dotenv
+
+# Load environment variables 
+load_dotenv()
 
 # It is highly recommended to use environment variables.
 workspace = Workspace(resource_id=os.environ['resource_id'], location=os.environ['azure_location'])

@@ -5,6 +5,10 @@ from qiskit import QuantumCircuit
 from qiskit.visualization import plot_histogram
 from qiskit import transpile
 from matplotlib import pyplot
+from dotenv import load_dotenv
+
+# Load environment variables 
+load_dotenv()
 
 # It is highly recommended to use environment variables.
 #provider = AzureQuantumProvider(resource_id="ID HERE", location="LOCATION HERE")
