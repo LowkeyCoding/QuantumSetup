@@ -26,12 +26,12 @@ In your command prompt/terminal install the required packages in your environmen
 
 #### Windows
 ```
-py -m pip install qiskit matplotlib pylatexenc numpy
+py -m pip install qiskit matplotlib pylatexenc numpy python-dotenv
 ```
 
 #### Unix/Mac
 ```
-python3 -m pip install qiskit matplotlib pylatexenc numpy
+python3 -m pip install qiskit matplotlib pylatexenc numpy python-dotenv
 ```
 
 ### Step 4: Install the backends you want to use
