@@ -35,8 +35,8 @@ provider = AzureQuantumProvider(workspace)
 ```
 One way to avoid this is by using a `.env` file that is the `.gitignore` to ensure that it is not uploaded to git. The `.env` file should be structured as shown below.
 ```ini
-ID=ID HERE
-LOCATION=LOCATION HERE
+azure_id=ID HERE
+azure_location=LOCATION HERE
 ```
 Loading the new environment variables is done using the `dotenv` package and the `load_dotenv` function.
 
@@ -50,7 +50,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-workspace = Workspace(resource_id=os.environ['ID'], location=os.environ['LOCATION'])
+workspace = Workspace(resource_id=os.environ['azure_id'], location=os.environ['azure_location'])
 provider = AzureQuantumProvider(workspace)
 ```
 
@@ -96,7 +96,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # It is highly recommended to use environment variables.
-workspace = Workspace(resource_id=os.environ['resource_id'], location=os.environ['azure_location'])
+workspace = Workspace(resource_id=os.environ['azure_id'], location=os.environ['azure_location'])
 #workspace = Workspace(resource_id="ID HERE", location="LOCATION HERE")
 provider = AzureQuantumProvider(workspace)
 # Selecting a backend
