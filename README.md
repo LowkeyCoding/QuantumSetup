@@ -42,17 +42,24 @@ If you want to use IBM Quantum hardware or simulators provided by IBM, switch to
 
 [IBM Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/tree/ibm_backend)
 
+#### Azure Backend
+
+If you want to use Azure Quantum hardware or simulators provided by Azure, switch to the `azure_backend` branch. Refer to the instructions in that branch's README for setup and usage.
+
+[Azure Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/tree/azure_backend)
+
+#### Braket Backend
+
+If you want to use Braket Quantum hardware or simulators provided by Amazon, switch to the `braket_backend` branch. Refer to the instructions in that branch's README for setup and usage.
+
+[Braket Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/tree/braket_backend)
+
 #### AER Backend
 
 If you prefer to use the Aer simulator provided by Qiskit for local simulations, switch to the `aer_backend` branch. Refer to the instructions in that branch's README for setup and usage.
 
 [AER Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/tree/aer_backend)
 
-#### Azure Backend
-
-If you want to use Azure Quantum hardware or simulators provided by Azure, switch to the `azure_backend` branch. Refer to the instructions in that branch's README for setup and usage.
-
-[Azure Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/tree/azure_backend)
 
 ### Step 5: Optionally install Jupyter
 Jupyter is a powerful tool for developing quantum algorithms due to its interactive nature. With Jupyter notebooks, developers can write code interspersed with explanatory text, equations, and visualizations. This makes it easy to experiment with different quantum algorithms, visualize quantum states, and analyze results in real-time.
