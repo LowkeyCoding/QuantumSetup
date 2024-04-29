@@ -19,7 +19,9 @@ python3 -m pip install qiskit-braket-provider braket boto3
 # Step 2: Creating Access key
 First, click on your username (1), then click on Security credentials (2). 
 ![Locate Credentials section](./images/amazon%20menu.PNG)
+
 Next, click on `Create new access key` (3) and follow the instructions. You'll need both the access key and the Secret access key for the next step.
+
 ![Create new key](./images/add_new_bracket.png)
 
 # step 3: Login with Python
