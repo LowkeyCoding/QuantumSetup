@@ -2,8 +2,12 @@ from qiskit import QuantumCircuit, transpile
 from qiskit.visualization import plot_histogram
 from qiskit_ibm_runtime import QiskitRuntimeService
 from matplotlib import pyplot
+from dotenv import load_env
+import os
 
-provider = QiskitRuntimeService()
+load_env()
+
+provider = QiskitRuntimeService(os.environ["ibm_token"], channel="ibm_quantum")
 
 # Selecting a backend
 # Use simulators to test before running it on real hardware.

@@ -24,7 +24,8 @@ If you don't have an account, sign up for one. Otherwise, log in.
 Once logged in, navigate to your dashboard. You'll find your API key there.
 Copy your API key. This will be used to authenticate your access to IBM Quantum services.
 ![alt text](./images/api_key.png "Title")
-Paste your API key into the `save_account.py` file then run it. It is important that you never run it on untrusted systems and NEVER publish the `save_account.py` with the api key in it. After running it once on a system the account will automatically be used when using the IBM backend.
+
+To login using python add the line `ibm_token=Your API Token Here` to the `.env` file.
 
 With these two steps completed, you'll have Qiskit installed and configured to use IBM Quantum hardware. You can then start experimenting with quantum circuits and running them on real quantum computers provided by IBM.
 
@@ -53,8 +54,12 @@ from qiskit import QuantumCircuit, transpile
 from qiskit.visualization import plot_histogram
 from qiskit_ibm_runtime import QiskitRuntimeService
 from matplotlib import pyplot
+from dotenv import load_env
+import os
 
-provider = QiskitRuntimeService()
+load_env()
+
+provider = QiskitRuntimeService(os.environ["ibm_token"])
 
 # Selecting a backend
 # Use simulators to test before running it on real hardware.
@@ -117,4 +122,4 @@ real_backend = provider.backend("ibm_brisbane")
 backend = AerSimulator.from_backend(real_backend)
 ```
 
-The full example can be seen [here](https://github.com/LowkeyCoding/QuantumSetup/blob/ibm_backend/sample_new.py)
+The full example can be seen [here](https://github.com/LowkeyCoding/QuantumSetup/blob/ibm_backend/sample_noise.py)
