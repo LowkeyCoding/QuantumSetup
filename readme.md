@@ -26,6 +26,18 @@ Copy your API key. This will be used to authenticate your access to IBM Quantum 
 ![alt text](./images/api_key.png "Title")
 
 To login using python add the line `ibm_token=Your API Token Here` to the `.env` file.
+```python
+from qiskit import QuantumCircuit, transpile
+from qiskit.visualization import plot_histogram
+from qiskit_ibm_runtime import QiskitRuntimeService
+from matplotlib import pyplot
+from dotenv import load_env
+import os
+
+load_env()
+
+provider = QiskitRuntimeService(os.environ["ibm_token"], channel="ibm_quantum")
+```
 
 With these two steps completed, you'll have Qiskit installed and configured to use IBM Quantum hardware. You can then start experimenting with quantum circuits and running them on real quantum computers provided by IBM.
 
@@ -59,7 +71,7 @@ import os
 
 load_env()
 
-provider = QiskitRuntimeService(os.environ["ibm_token"])
+provider = QiskitRuntimeService(os.environ["ibm_token"], channel="ibm_quantum")
 
 # Selecting a backend
 # Use simulators to test before running it on real hardware.
@@ -113,11 +125,15 @@ from qiskit import QuantumCircuit, transpile
 from qiskit.visualization import plot_histogram
 from qiskit_ibm_runtime import QiskitRuntimeService
 from matplotlib import pyplot
+from dotenv import load_env
+import os
 
-provider = QiskitRuntimeService()
+load_env()
+
+provider = QiskitRuntimeService(os.environ["ibm_token"], channel="ibm_quantum")
 
 # Selecting a backend hardware from ibm.,
-real_backend = provider.backend("ibm_brisbane")
+real_backend = provider.backend("ibm_brisbane", channel="ibm_quantum")
 # Instantiate Aer simulator with hardware backend.
 backend = AerSimulator.from_backend(real_backend)
 ```
