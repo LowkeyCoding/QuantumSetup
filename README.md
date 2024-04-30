@@ -34,7 +34,10 @@ py -m pip install qiskit matplotlib pylatexenc numpy matplotlib python-dotenv
 python3 -m pip install qiskit matplotlib pylatexenc numpy matplotlib python-dotenv
 ```
 
-### Step 4: Install the backends you want to use
+### Step 4: Environment file
+First step is creating an environment file with the name `.env` in your project folder. This file should never be shared, as anyone who has access will be able to spend credits. If you are using `git`, this can be avoided by adding it to the `.gitignore` file, by adding the line `.env`. The environment file operates as a key-value store, utilizing the format `key = value`, with each key on a separate line. In subsequent guides for various backends, we will employ the `.env` file to store login information.
+
+### Step 5: Install the backends you want to use
 
 #### IBM Backend
 
