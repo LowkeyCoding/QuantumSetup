@@ -41,30 +41,13 @@ provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quan
 
 With these two steps completed, you'll have Qiskit installed and configured to use IBM Quantum hardware. You can then start experimenting with quantum circuits and running them on real quantum computers provided by IBM.
 
-# Step 3: Listing accesible backends.
-To list the currently available backends add the snippet below to the login example.
-```python
-print("This workspace's targets:")
-for backend in provider.backends():
-    print("- " + backend.name)
-```
-This should produce a list like the one below.
-```
-This workspace's targets:
-- simulator_mps
-- simulator_statevector
-- simulator_stabilizer
-- ibm_brisbane
-- ibm_osaka
-- ibmq_qasm_simulator
-- simulator_extended_stabilizer
-```
-# Step 4: Running a quantum circuit.
-To run a quantum circuit a specific backend has to be chosen from the list of currently available ones. This is done by getting the backend from the provider `backend = provider.get_backend("simulator_mps")` as seen in the example below. It is important to always test programs on the simulator first and, in general, limit the usage of real hardware as the cost adds up extremely quickly.
+# Step 3: Running a quantum circuit.
+Running quantum circuits is a bit different on IBM. They've changed how programs are run and how backends are selected, as they only have their own hardware. Backends are selected by choosing the least busy. For manual backend selection, the method used for Azure or AWS can be applied. It's important to note that using their cloud quantum simulators is deprecated after 15/05/2024; any program run is on real hardware. When running the example quantum program below, be aware that IBM's cost estimates usually have a large margin of error (When I ran it, it said 649 seconds. It actually took 2...).
 ```python
 from qiskit import QuantumCircuit, transpile
 from qiskit.visualization import plot_histogram
-from qiskit_ibm_runtime import QiskitRuntimeService
+from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
 from matplotlib import pyplot
 from dotenv import load_dotenv
 import os
@@ -75,29 +58,28 @@ provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quan
 
 # Selecting a backend
 # Use simulators to test before running it on real hardware.
-backend = provider.get_backend("simulator_mps")
-# Optionally use where operational means running on hardware.
-#backend = provider.least_busy(operational=False, simulator=True)
+# Simulators will be depricated on 15/05/2024 see Aer for local simulation
+backend = provider.least_busy(operational=True, simulator=False, min_num_qubits=127)
 
 circ = QuantumCircuit(3, 3)
 circ.name = "My First Quantum Program"
 circ.h(0)
 circ.cx(0, 1)
 circ.cx(1, 2)
-circ.measure([0,1,2], [0, 1, 2])
+circ.measure_all()
 
 circ.draw('mpl')
 
 # Transpile circuit to work with the current backend.
-qc_compiled = transpile(circ, backend)
+pm = generate_preset_pass_manager(backend=backend, optimization_level=1)
+isa_circuit = pm.run(circ)
 # Run the job
-# This will cause a pop where you have to authenticate with azure.
-job_sim = backend.run(qc_compiled, shots=1024)
+sampler = Sampler(backend)
+job = sampler.run([isa_circuit], shots=100)
 
 # Get the result
-result_sim = job_sim.result()
-counts = result_sim.get_counts(qc_compiled)
-
+result = job.result()
+counts = result[0].data.meas.get_counts()
 # Plot the result
 plot_histogram(counts)
 pyplot.show()

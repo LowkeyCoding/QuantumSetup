@@ -25,8 +25,8 @@ circuit.draw('mpl')
 
 # Transpile circuit to work with the current backend.
 qc_compiled = transpile(circuit, backend)
+
 # Run the job
-# This will cause a pop where you have to authenticate with azure.
 job_sim = backend.run(qc_compiled, shots=1024)
 
 # Get the result

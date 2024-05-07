@@ -1,6 +1,7 @@
 from qiskit import QuantumCircuit, transpile
 from qiskit.visualization import plot_histogram
-from qiskit_ibm_runtime import QiskitRuntimeService
+from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
 from matplotlib import pyplot
 from dotenv import load_dotenv
 import os
@@ -11,29 +12,28 @@ provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quan
 
 # Selecting a backend
 # Use simulators to test before running it on real hardware.
-backend = provider.get_backend("simulator_mps")
-# Optionally use where operational means running on hardware.
-#backend = provider.least_busy(operational=False, simulator=True)
+# Simulators will be depricated on 15/05/2024 see Aer for local simulation
+backend = provider.least_busy(operational=True, simulator=False, min_num_qubits=127)
 
-circuit = QuantumCircuit(3, 3)
-circuit.name = "My First Quantum Program"
-circuit.h(0)
-circuit.cx(0, 1)
-circuit.cx(1, 2)
-circuit.measure([0,1,2], [0, 1, 2])
+circ = QuantumCircuit(3, 3)
+circ.name = "My First Quantum Program"
+circ.h(0)
+circ.cx(0, 1)
+circ.cx(1, 2)
+circ.measure_all()
 
-circuit.draw('mpl')
+circ.draw('mpl')
 
 # Transpile circuit to work with the current backend.
-qc_compiled = transpile(circuit, backend)
+pm = generate_preset_pass_manager(backend=backend, optimization_level=1)
+isa_circuit = pm.run(circ)
 # Run the job
-# This will cause a pop where you have to authenticate with azure.
-job_sim = backend.run(qc_compiled, shots=1024)
+sampler = Sampler(backend)
+job = sampler.run([isa_circuit], shots=100)
 
 # Get the result
-result_sim = job_sim.result()
-counts = result_sim.get_counts(qc_compiled)
-
+result = job.result()
+counts = result[0].data.meas.get_counts()
 # Plot the result
 plot_histogram(counts)
 pyplot.show()
