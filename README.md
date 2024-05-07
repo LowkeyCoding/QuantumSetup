@@ -21,7 +21,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-To enter the project's virtual environment, you'll need to run the second command. It's crucial to ensure you're in the virtual environment, especially when installing packages. This helps prevent conflicts with system-wide packages. Make sure to check if you're in the virtual environment by verifying if \texttt{(.venv)} is appended to the current path in the terminal before installing any packages. If you are still unsure, then you can run the second command to enter it.
+To enter the project's virtual environment, you'll need to run the second command. It's crucial to ensure you're in the virtual environment, especially when installing packages. This helps prevent conflicts with system-wide packages. Make sure to check if you're in the virtual environment by verifying if `(.venv)` is appended to the current path in the terminal before installing any packages. If you are still unsure, then you can run the second command to enter it.
 
 ### Step 3: Install Qiskit and Required Packages
 To create a basic setup with a couple of helpful packages for quantum computing, install the following packages for your operating system.
