@@ -8,7 +8,7 @@ Welcome to the Quantum Computing Setup Guide! This repository contains code for 
 Download and install Python 3 from the official Python website: [Python.org](https://www.python.org/downloads/). Follow the installation instructions provided for your operating system.
 
 ###  Step 2: Setup Python environment
-Go to your desired location and open a terminal or comand prompt and use the following commands to create and activate an environment.
+Go to your deseired folder for your quantum project and open a terminal or comand prompt and use the following commands to create and activate an environment.
 
 #### Windows
 ```
@@ -21,8 +21,10 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
+To enter the project's virtual environment, you'll need to run the second command. It's crucial to ensure you're in the virtual environment, especially when installing packages. This helps prevent conflicts with system-wide packages. Make sure to check if you're in the virtual environment by verifying if \texttt{(.venv)} is appended to the current path in the terminal before installing any packages. If you are still unsure, then you can run the second command to enter it.
+
 ### Step 3: Install Qiskit and Required Packages
-In your command prompt/terminal install the required packages in your environment.
+To create a basic setup with a couple of helpful packages for quantum computing, install the following packages for your operating system.
 
 #### Windows
 ```
