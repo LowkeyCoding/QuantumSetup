@@ -1,5 +1,9 @@
+qiskit
+matplotlib
+pylatexenc
+numpy
+matplotlib
+python-dotenv
 azure-quantum
 azure-quantum[qiskit]
-pylatexenc
-matplotlib
-numpy
+ipykernel
