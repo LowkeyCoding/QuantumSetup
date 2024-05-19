@@ -28,12 +28,12 @@ To create a basic setup with a couple of helpful packages for quantum computing,
 
 #### Windows
 ```
-py -m pip install qiskit matplotlib pylatexenc numpy matplotlib python-dotenv
+py -m pip install qiskit matplotlib pylatexenc numpy python-dotenv
 ```
 
 #### Unix/Mac
 ```
-python3 -m pip install qiskit matplotlib pylatexenc numpy matplotlib python-dotenv
+python3 -m pip install qiskit matplotlib pylatexenc numpy python-dotenv
 ```
 
 ### Step 4: Environment file
