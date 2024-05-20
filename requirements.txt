@@ -1,5 +1,4 @@
 qiskit
-matplotlib
 pylatexenc
 numpy
 matplotlib
