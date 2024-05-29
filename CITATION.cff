@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: ""
+authors:
+- family-names: "Walsted"
+  given-names: "Loke"
+- family-names: "Larsen"
+  given-names: "Torben"
+  orcid: "https://orcid.org/0000-0002-7378-5967"
+title: "A Collection of guides to setup Quantum programming using Qisikt"
+version: 1.0.0
+date-released: 2024-05-29
+url: "https://github.com/LowkeyCoding/QuantumSetup"
