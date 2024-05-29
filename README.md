@@ -15,6 +15,14 @@ Go to your deseired folder for your quantum project and open a terminal or coman
 py -m venv .venv
 .venv\Scripts\activate
 ```
+
+If you encounter an error like `scripts cannot be loaded because running scripts is disabled on this system` you need to adjust your PowerShell execution policy. This can be done by running the following command in an elevated PowerShell window (run as administrator):
+
+```
+    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+This command allows the execution of locally stored scripts and remote scripts signed by trusted publishers.
 #### Unix/Mac
 ```
 python3 -m venv .venv
