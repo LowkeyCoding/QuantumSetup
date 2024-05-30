@@ -6,14 +6,14 @@ Run the following command to install Qiskit and other required dependencies:
 ## Windows
 ```
 .venv\Scripts\activate
-py -m pip install qiskit-braket-provider braket boto3
+py -m pip install qiskit-braket-provider boto3
 ```
 
 ## Unix/Mac
 
 ```
 source .venv/bin/activate
-python3 -m pip install qiskit-braket-provider braket boto3
+python3 -m pip install qiskit-braket-provider boto3
 ```
 
 # Step 2: Creating Access key

@@ -1,0 +1,8 @@
+qiskit
+matplotlib
+pylatexenc
+numpy
+python-dotenv
+ipykernel
+qiskit-braket-provider
+boto3
