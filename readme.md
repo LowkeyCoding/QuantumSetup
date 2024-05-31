@@ -1,4 +1,4 @@
-> :warning: **Given no update qiskit wrapper for braket will stop working approximately the ~August 16, 2024**
+> :warning: **Given no updates qiskit wrapper for braket will stop working approximately the ~August 16, 2024**
 # Step 1: Setup the backend
 
 If you're using Windows, open Command Prompt (cmd.exe) or PowerShell. If you're using Unix-based systems like Linux or macOS, open Terminal.
