@@ -25,7 +25,7 @@ circ.cx(0, 1)
 circ.cx(1, 2)
 circ.measure([0,1,2], [0, 1, 2])
 
-circuit.draw('mpl')
+circ.draw('mpl')
 
 # Transpile circuit to work with the current backend.
 qc_compiled = transpile(circ, backend)
