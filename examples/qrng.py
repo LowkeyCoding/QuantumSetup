@@ -4,8 +4,6 @@ from qiskit.visualization import plot_histogram
 from qiskit_ibm_runtime import QiskitRuntimeService
 from matplotlib import pyplot
 from dotenv import load_dotenv
-from random import randbytes
-import numpy as np
 import os
 
 load_dotenv()
