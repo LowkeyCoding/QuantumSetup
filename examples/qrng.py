@@ -2,9 +2,7 @@ from braket.aws.aws_session import AwsSession
 import boto3
 import os 
 from dotenv import load_dotenv
-from random import randbytes
 from qiskit import *
-import numpy as np
 from qiskit_braket_provider import BraketProvider
 from qiskit.visualization import plot_histogram
 from matplotlib import pyplot
