@@ -4,7 +4,6 @@ from matplotlib import pyplot
 from dotenv import load_dotenv
 from qiskit import QuantumCircuit, transpile, QuantumRegister, ClassicalRegister
 from qiskit.visualization import plot_histogram
-import numpy as np
 import os
 
 load_dotenv()
