@@ -1,10 +1,7 @@
 from qiskit import *
-import numpy as np
 from qiskit_aer import AerSimulator
 from qiskit.visualization import plot_histogram
 from matplotlib import pyplot
-from random import randbytes
-import numpy as np
 
 backend = AerSimulator()
 
