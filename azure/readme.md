@@ -6,19 +6,19 @@ Run the following command to install the azure backend and other required depend
 ## Windows
 ```
 .venv\Scripts\activate
-py -m pip install azure-quantum azure-quantum[qiskit]
+pip install azure-quantum azure-quantum[qiskit]
 ```
 
 ## Unix
 
 ```
 source .venv/bin/activate
-python3 -m pip install azure-quantum "azure-quantum[qiskit]" 
+pip install azure-quantum "azure-quantum[qiskit]" 
 ```
 
 Unix users may need to install `PyQt5` if they dont use Jupyter to show plots
 ```
-python3 -m pip install PyQt5
+pip install PyQt5
 ```
 
 # Step 2: Get the `Resource ID` and `Location` 
