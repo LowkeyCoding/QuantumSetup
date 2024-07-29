@@ -54,10 +54,10 @@ git clone -b <branchname> --single-branch <remote-repo-url>
 
 To follow the setup guide for a specific backend, the easiest approach is to check out the individudal branches `README.md` for more information:
 
-* [IBM Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/ibm)
-* [Azure Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/azure)
-* [Braket Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/braket)
-* [AER Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/aer)
+* [IBM Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/tree/ibm_backend/)
+* [Azure Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/tree/azure_backend/)
+* [Braket Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/tree/braket_backend/)
+* [AER Backend Branch](https://github.com/LowkeyCoding/QuantumSetup/tree/aer_backend/)
 
 
 
