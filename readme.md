@@ -6,14 +6,14 @@ Run the following command to install the azure backend and other required depend
 ## Windows
 ```
 .venv\Scripts\activate
-py -m pip install qiskit-ibm-runtime
+pip install qiskit-ibm-runtime
 ```
 
 ## Unix
 
 ```
 source .venv/bin/activate
-python3 -m pip install qiskit-ibm-runtime
+pip install qiskit-ibm-runtime
 ```
 
 # Step 2: Get API Key from IBM Quantum Dashboard
@@ -88,14 +88,8 @@ The example can also be seen [here](https://github.com/LowkeyCoding/QuantumSetup
 # Step 5: Running simulator after the 15th of may
 To access advanced simulation capabilities in Qiskit of IBM systems, the `qiskit-aer` package is required.
 
-## Windows
 ```
-py -m pip install qiskit_aer
-```
-
-## Unix
-```
-python3 -m pip install qiskit_aer
+pip install qiskit_aer
 ```
 
 To run a simulation, it is required to first load the real hardware backend from IBM as in the previous step and then use the backend to instantiate the Aer simulator.
