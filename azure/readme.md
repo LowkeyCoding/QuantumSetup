@@ -21,16 +21,16 @@ Unix users may need to install `PyQt5` if they dont use Jupyter to show plots
 pip install PyQt5
 ```
 
-# Step 2: Get the `Resource ID` and `Location` 
-To find the `Resource ID` and `Location` go to [azure portal](https://portal.azure.com/#home) and locate `Quantum workspaces` under services. From there you should be able to see them as shown below.
-![Locate Resource ID and Location](https://learn.microsoft.com/en-us/azure/quantum/media/azure-quantum-resource-id.png)
+# Step 2: Get the `Connection String`
+To find the `Connection String`  go to [azure portal](https://portal.azure.com/#home) and locate `Quantum workspaces` under services. From there you should be able to click `Operations` and then `Access Keys`. Finally copy the `Connection String`.
+![Locate Connection String](./images/azure_connection_string.png)
 
 # Step 3: Loginin from python.
 To log in, use the Python snippet below, but you must never share the resource_id on GitHub or any other public site. 
 ```python
 from azure.quantum import Workspace
 from azure.quantum.qiskit import AzureQuantumProvider
-workspace = Workspace(resource_id="ID HERE", location="LOCATION HERE")
+workspace = workspace = Workspace.from_connection_string("Connection String HERE")
 provider = AzureQuantumProvider(workspace)
 ```
 One way to avoid this is by using a `.env` file that is the `.gitignore` to ensure that it is not uploaded to git. The `.env` file should be structured as shown below.
@@ -49,8 +49,7 @@ from dotenv import load_dotenv
 # Load environment variables 
 load_dotenv()
 
-
-workspace = Workspace(resource_id=os.environ['azure_id'], location=os.environ['azure_location'])
+workspace = Workspace.from_connection_string(os.environ['azure_connection'])
 provider = AzureQuantumProvider(workspace)
 ```
 
@@ -96,7 +95,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # It is highly recommended to use environment variables.
-workspace = Workspace(resource_id=os.environ['azure_id'], location=os.environ['azure_location'])
+workspace = Workspace.from_connection_string(os.environ['azure_connection'])
 #workspace = Workspace(resource_id="ID HERE", location="LOCATION HERE")
 provider = AzureQuantumProvider(workspace)
 # Selecting a backend

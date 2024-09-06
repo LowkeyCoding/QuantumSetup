@@ -1,11 +1,9 @@
 from qiskit import *
-import numpy as np
 from qiskit_aer import AerSimulator
 from qiskit.visualization import plot_histogram
 from matplotlib import pyplot
-from random import randbytes
-import numpy as np
 
+# Section - Backend and Qubit Register Initialization
 backend = AerSimulator()
 num_bits = 3 # number of random bits to generate
 
@@ -13,11 +11,11 @@ qr = QuantumRegister(num_bits, name='qr')
 cr = ClassicalRegister(num_bits, name='cr')
 grover = QuantumCircuit(qr,cr)
 
-# init
+# Section - Superposition State Preparation
 for i in range(num_bits):
     grover.h(qr[i])
 
-# oracle
+# Section - Oracle Definition
 oracle = QuantumCircuit(qr, name="Oracle")
 oracle.cz(0,2) # | 101>
 oracle.cz(1,2) # | 011>
@@ -54,17 +52,18 @@ def create_diffuser(num_bits):
     diffuser_qc.h(diffuser_qr)
 
     return diffuser_qc
-
-# Example usage
+# Section - Grover Iteration (Oracle + Diffuser)
 diffuser = create_diffuser(num_bits)
 
-# 
 grover.append(oracle, qr)
 grover.append(diffuser, qr)
+
+# Section - Measurement
 grover.measure(qr,cr)
 grover.draw("mpl")
 
-# Run grover circuit
+# Section - Circuit Execution and Result Analysis
+
 qc_compiled = transpile(grover, backend)
 job_sim = backend.run(qc_compiled, shots=1024)
 result_sim = job_sim.result()

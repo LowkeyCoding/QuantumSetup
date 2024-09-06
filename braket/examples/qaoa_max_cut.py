@@ -4,16 +4,16 @@ import boto3
 import os 
 from dotenv import load_dotenv
 from qiskit import *
-import numpy as np
 from qiskit_braket_provider import BraketProvider
 from qiskit.visualization import plot_histogram
 from matplotlib import pyplot
-
 
 # Circuit Specific Imports
 from qiskit.circuit import Parameter
 from scipy.optimize import minimize
 
+# Section - Backend Setup and Graph Definition
+# Load environment variables 
 load_dotenv()
 
 boto_session = boto3.Session(
@@ -25,7 +25,6 @@ session = AwsSession(boto_session)
 provider = BraketProvider()
 backend = provider.get_backend("SV1", aws_session = session)
 
-
 # Define a graph representing a square. Each node is identified by an integer.
 graph = {
     "nodes": [0,1,2,3],
@@ -35,7 +34,7 @@ graph = {
 NODES = "nodes"
 EDGES = "edges"
 
-
+# Section - Maxcut Cost
 def maxcut_cost(solution, graph):
     """Calculates the cost (negative of the number of edges cut) for a given solution.
 
@@ -51,7 +50,7 @@ def maxcut_cost(solution, graph):
         if solution[i] != solution[j]:
             cost -= 1
     return cost
-
+# Section - Expected Value
 def compute_expectation(counts, graph):
     """Calculates the expected value of the cost function given measurement results.
 
@@ -70,7 +69,7 @@ def compute_expectation(counts, graph):
         sum_count += count
     return avg/sum_count
 
-
+# Section - Circuit Creation
 def create_qaoa_circ(graph, theta):
     """Constructs a parameterized QAOA circuit for the Max-Cut problem.
 
@@ -100,7 +99,7 @@ def create_qaoa_circ(graph, theta):
     qc.measure_all()
     return qc
 
-
+# Section - Calculate Expected Value
 def get_expectation(graph, backend, shots=512):
     """Calculates the expected value of the cost function given measurement results.
 
@@ -120,6 +119,7 @@ def get_expectation(graph, backend, shots=512):
         return compute_expectation(counts, graph)
     return execute_circ
 
+# Section - Optimizing Circuit
 # Get the function to calculate expectation for optimization
 expectation = get_expectation(graph, backend)
 
@@ -128,12 +128,15 @@ res = minimize(expectation,
                method='COBYLA') # Classical optimization method
 # Print the result of the minimization function
 print(res)
+
+# Section - Optimized Circuit
 # Create the final circuit with optimized parameters
 qc_res = create_qaoa_circ(graph, res.x)
 
 # Draw the final circuit
 qc_res.draw("mpl")
 
+# Section - Circuit Execution and Result Analysis
 # Execute the circuit and visualize results
 qc_compiled = transpile(qc_res, backend)
 job_sim = backend.run(qc_compiled, shots=512)

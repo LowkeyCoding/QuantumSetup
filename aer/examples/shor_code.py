@@ -1,11 +1,8 @@
 from qiskit import *
-import numpy as np
 from qiskit_aer import AerSimulator
 from qiskit.visualization import plot_histogram
 from matplotlib import pyplot
-from random import randbytes
-import numpy as np
-
+# Section - Qubit Register and Classical Register Initialization
 backend = AerSimulator()
 
 qr = QuantumRegister(9, name='qr')
@@ -13,8 +10,8 @@ cr = ClassicalRegister(1, name='cr')
 
 shor = QuantumCircuit(qr,cr)
 
-# Initial Bit Value
-#shor.x(qr[0]) # Uncomment to set it to |1>
+# Section - Superposition State Preparation (|1> on first qubit, others in superposition)
+# shor.x(qr[0]) # Uncomment to set the first qubit to |1> (optional)
 
 shor.cx(qr[0],qr[3])
 shor.cx(qr[0],qr[6])
@@ -65,8 +62,10 @@ shor.barrier(qr)
 
 shor.measure(qr[0],cr[0])
 
+# Section - Circuit Visualization
 shor.draw("mpl")
 
+# Section - Circuit Execution and Result Analysis
 # Run shor code circuit
 qc_compiled = transpile(shor, backend)
 job_sim = backend.run(qc_compiled, shots=1024)

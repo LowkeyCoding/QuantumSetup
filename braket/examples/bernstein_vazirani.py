@@ -1,13 +1,13 @@
 from braket.aws.aws_session import AwsSession 
 import boto3
 import os 
-from qiskit import *
-import numpy as np
-from qiskit.visualization import plot_histogram
-from qiskit_braket_provider import BraketProvider
-from matplotlib import pyplot
 from dotenv import load_dotenv
+from qiskit import *
+from qiskit_braket_provider import BraketProvider
+from qiskit.visualization import plot_histogram
+from matplotlib import pyplot
 
+# Section - Setup Circuit Parameters
 # Load environment variables 
 load_dotenv()
 
@@ -17,9 +17,7 @@ boto_session = boto3.Session(
     region_name=os.environ['aws_region'],
 )
 session = AwsSession(boto_session)
-
 provider = BraketProvider()
-
 backend = provider.get_backend("SV1", aws_session = session)
 
 qubits = 6 # The number of physical qubits
@@ -28,19 +26,23 @@ a = 42 # the hidden integer
 # Ensure it can be represented with the number of specified qubits
 a = a % 2**(qubits)
 
-# Setup the registers
+# Section - Quantum Register and Classical Register Initialization
 qr = QuantumRegister(qubits)
 cr = ClassicalRegister(qubits)
 
 circ = QuantumCircuit(qr, cr)
+
+# Section - Superposition State Preparation (Equal weights to all basis states)
 for i in range(qubits):
-    circ.h(qr[i])
+    circ.h(qr[i])  # Apply Hadamard gates to put qubits in supe
 
 circ.barrier()
-
+# Section - Oracle Function
 for i in range(qubits):
+    # Apply Z gate if the i-th bit of 'a' is 1
     if (a & (1 << i)):
-        circ.z(qr[i])
+        circ.z(qr[i]) 
+    # Apply identity gate if the i-th bit of 'a' is 0
     else:
         circ.id(qr[i])
         circ.barrier()
@@ -48,19 +50,18 @@ for i in range(qubits):
 for i in range(qubits):
     circ.h(qr[i])
 
+# Section - Running the circuit
 circ.barrier()
 circ.measure(qr,cr)
 circ.draw("mpl")
 
 
-# Transpile circuit to work with the current backend.
 qc_compiled = transpile(circ, backend)
-# Run the job
 job_sim = backend.run(qc_compiled, shots=1024)
-# Get the result
 result_sim = job_sim.result()
 counts = result_sim.get_counts()
 
-# Plot the result
+
+# Section - Plotting the results
 plot_histogram(counts)
 pyplot.show()

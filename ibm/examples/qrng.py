@@ -4,8 +4,11 @@ from qiskit.visualization import plot_histogram
 from qiskit_ibm_runtime import QiskitRuntimeService
 from matplotlib import pyplot
 from dotenv import load_dotenv
+from random import randbytes
+import numpy as np
 import os
 
+# Section - Qubit Register and Classical Register Initialization
 load_dotenv()
 
 provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quantum")
@@ -20,13 +23,16 @@ qr = QuantumRegister(num_bits, name='qr')
 cr = ClassicalRegister(num_bits, name='cr')
 qrng = QuantumCircuit(qr,cr)
 
+# Section - Superposition State Preparation (Equal weights to all basis states)
 for i in range(num_bits):
     qrng.h(qr[i])
 
+
 qrng.measure(qr, cr)
+# Section - Circuit Visualization
 qrng.draw("mpl")
 
-# Run shor code circuit
+# Section - Circuit Execution and Result Analysis
 qc_compiled = transpile(qrng, backend)
 job_sim = backend.run(qc_compiled, shots=1024)
 result_sim = job_sim.result()

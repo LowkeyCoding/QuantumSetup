@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # It is highly recommended to use environment variables.
-workspace = Workspace(resource_id=os.environ['azure_id'], location=os.environ['azure_location'])
+workspace = Workspace.from_connection_string(os.environ['azure_connection'])
 provider = AzureQuantumProvider(workspace)
 # Selecting a backend
 # Use simulators to test before running it on real hardware.

@@ -1,12 +1,14 @@
 from qiskit_aer import AerSimulator
 from qiskit import QuantumCircuit, transpile, QuantumRegister, ClassicalRegister
-from qiskit.circuit.library import CCZGate
 from qiskit.visualization import plot_histogram
 from qiskit_ibm_runtime import QiskitRuntimeService
 from matplotlib import pyplot
 from dotenv import load_dotenv
+from random import randbytes
+import numpy as np
 import os
 
+# Section - Backend and Qubit Register Initialization
 load_dotenv()
 
 provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quantum")
@@ -14,18 +16,17 @@ provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quan
 # Selecting a backend
 real_backend = provider.backend("ibm_brisbane")
 backend = AerSimulator.from_backend(real_backend)
-
 num_bits = 3 # number of random bits to generate
 
 qr = QuantumRegister(num_bits, name='qr')
 cr = ClassicalRegister(num_bits, name='cr')
 grover = QuantumCircuit(qr,cr)
 
-# init
+# Section - Superposition State Preparation
 for i in range(num_bits):
     grover.h(qr[i])
 
-# oracle
+# Section - Oracle Definition
 oracle = QuantumCircuit(qr, name="Oracle")
 oracle.cz(0,2) # | 101>
 oracle.cz(1,2) # | 011>
@@ -62,17 +63,18 @@ def create_diffuser(num_bits):
     diffuser_qc.h(diffuser_qr)
 
     return diffuser_qc
-
-# Example usage
+# Section - Grover Iteration (Oracle + Diffuser)
 diffuser = create_diffuser(num_bits)
 
-# 
 grover.append(oracle, qr)
 grover.append(diffuser, qr)
+
+# Section - Measurement
 grover.measure(qr,cr)
 grover.draw("mpl")
 
-# Run grover circuit
+# Section - Circuit Execution and Result Analysis
+
 qc_compiled = transpile(grover, backend)
 job_sim = backend.run(qc_compiled, shots=1024)
 result_sim = job_sim.result()
