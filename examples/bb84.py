@@ -6,10 +6,11 @@ from qiskit import QuantumCircuit, transpile, QuantumRegister, ClassicalRegister
 from qiskit.visualization import plot_histogram
 import numpy as np
 import os
+import numpy as np
+# Section - Setup
 
 load_dotenv()
-
-workspace = Workspace(resource_id=os.environ['azure_id'], location=os.environ['azure_location'])
+workspace = Workspace.from_connection_string(os.environ['azure_connection'])
 provider = AzureQuantumProvider(workspace)
 # Selecting a backend
 # Use simulators to test before running it on real hardware.
@@ -22,6 +23,9 @@ cr = ClassicalRegister(key_len, name='cr')
 
 alice = QuantumCircuit(qr, cr, name="a") # Alice circuit
 bob = QuantumCircuit(qr, cr, name="b") # Bob circuit
+
+# Section - Key generation
+
 # Create alice secret key
 alice_key = [1 if np.random.random() > 0.5 else 0 for i in range(key_len)]
 
@@ -30,6 +34,9 @@ alice_key = [1 if np.random.random() > 0.5 else 0 for i in range(key_len)]
 for index, digit in enumerate(alice_key):
     if digit == 1:
         alice.x(qr[index]) # if key has a '1', change state to |1>
+
+
+# Section - Basis Generation
 
 def create_basis(qc, qr):
     basis = []
@@ -52,6 +59,7 @@ for index in range(key_len):
 
 alice_bob.draw("mpl").suptitle("Alice to Bob")
 
+# Section - Key sharing
 def run_circuit(circ):
     # Transpile circuit to work with the current backend.
     qc_compiled = transpile(circ, backend)
@@ -60,6 +68,7 @@ def run_circuit(circ):
     # Get the result
     result_sim = job_sim.result()
     return result_sim.get_counts()
+
 
 def get_shared_key(key_a, key_b, basis_a, basis_b):
     acc = 0
@@ -77,14 +86,17 @@ def get_shared_key(key_a, key_b, basis_a, basis_b):
     return (shared_key_a, shared_key_b, acc)
 
 counts = run_circuit(alice_bob)
-(shared_key_a, shared_key_b, acc) = get_shared_key(alice_key, next(iter(counts.keys())), alice_basis, bob_basis)
 
+(shared_key_a, shared_key_b, acc) = get_shared_key(alice_key, next(iter(counts.keys())), alice_basis, bob_basis)
+# Section - Results
 print(f"")
 print(f"")
 print(f"Pure Execution without Eve")
 print(f"Alice shared key = {shared_key_a}")
 print(f"Bob shared key   = {shared_key_b}")
 print(f"Key sharing {"succeeded" if acc == len(shared_key_a) else  "failed"}")
+
+# Section - Eve Intercepting Alice
 
 # Let introduce Eve to the circuit
 eve = QuantumCircuit(qr, cr, name="c")
@@ -98,6 +110,8 @@ for index in range(key_len):
 
 alice_eve.draw("mpl").suptitle("Alice to Eve")
 counts = run_circuit(alice_eve)
+
+# Section Eve Impersonating Alice
 
 # Second Eve send bits to Bob.
 # To achieve this we first recover Eve's state after measuring
@@ -115,11 +129,11 @@ for index in range(key_len):
 
 eve_bob.draw("mpl").suptitle("Eve to Bob")
 
+# Section - Results with Eve
 counts = run_circuit(eve_bob)
 (shared_key_a, shared_key_b, acc) =  get_shared_key(alice_key, next(iter(counts.keys())), alice_basis, bob_basis)
 
-print(f"")
-print(f"")
+
 print(f"Execution with Eve")
 print(f"Alice's Basis = {alice_basis}")
 print(f"Eve's Basis   = {eve_basis}")

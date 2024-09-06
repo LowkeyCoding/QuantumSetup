@@ -4,16 +4,16 @@ from matplotlib import pyplot
 from dotenv import load_dotenv
 from qiskit import QuantumCircuit, transpile, QuantumRegister, ClassicalRegister
 from qiskit.visualization import plot_histogram
+import numpy as np
 import os
 
+# Section - Setup Circuit Parameters
 load_dotenv()
-
-# It is highly recommended to use environment variables.
-workspace = Workspace(resource_id=os.environ['azure_id'], location=os.environ['azure_location'])
+workspace = Workspace.from_connection_string(os.environ['azure_connection'])
 provider = AzureQuantumProvider(workspace)
 # Selecting a backend
 # Use simulators to test before running it on real hardware.
-backend = provider.get_backend("quantinuum.sim.h1-1e")
+backend = provider.get_backend("rigetti.sim.qvm")
 
 qubits = 6 # The number of physical qubits
 a = 42 # the hidden integer
@@ -21,19 +21,23 @@ a = 42 # the hidden integer
 # Ensure it can be represented with the number of specified qubits
 a = a % 2**(qubits)
 
-# Setup the registers
+# Section - Quantum Register and Classical Register Initialization
 qr = QuantumRegister(qubits)
 cr = ClassicalRegister(qubits)
 
 circ = QuantumCircuit(qr, cr)
+
+# Section - Superposition State Preparation (Equal weights to all basis states)
 for i in range(qubits):
-    circ.h(qr[i])
+    circ.h(qr[i])  # Apply Hadamard gates to put qubits in supe
 
 circ.barrier()
-
+# Section - Oracle Function
 for i in range(qubits):
+    # Apply Z gate if the i-th bit of 'a' is 1
     if (a & (1 << i)):
-        circ.z(qr[i])
+        circ.z(qr[i]) 
+    # Apply identity gate if the i-th bit of 'a' is 0
     else:
         circ.id(qr[i])
         circ.barrier()
@@ -41,18 +45,18 @@ for i in range(qubits):
 for i in range(qubits):
     circ.h(qr[i])
 
+# Section - Running the circuit
 circ.barrier()
 circ.measure(qr,cr)
 circ.draw("mpl")
 
 
-# Transpile circuit to work with the current backend.
 qc_compiled = transpile(circ, backend)
-# Run the job
 job_sim = backend.run(qc_compiled, shots=1024)
-# Get the result
 result_sim = job_sim.result()
-counts = result_sim.get_counts()
-# Plot the result
+counts = result_sim.get_counts(qc_compiled)
+
+
+# Section - Plotting the results
 plot_histogram(counts)
 pyplot.show()

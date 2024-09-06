@@ -6,10 +6,9 @@ from qiskit import QuantumCircuit, transpile, QuantumRegister, ClassicalRegister
 from qiskit.visualization import plot_histogram
 import numpy as np
 import os
-
+# Section - Qubit Register and Classical Register Initialization
 load_dotenv()
-
-workspace = Workspace(resource_id=os.environ['azure_id'], location=os.environ['azure_location'])
+workspace = Workspace.from_connection_string(os.environ['azure_connection'])
 provider = AzureQuantumProvider(workspace)
 # Selecting a backend
 # Use simulators to test before running it on real hardware.
@@ -20,8 +19,8 @@ cr = ClassicalRegister(1, name='cr')
 
 shor = QuantumCircuit(qr,cr)
 
-# Initial Bit Value
-#shor.x(qr[0]) # Uncomment to set it to |1>
+# Section - Superposition State Preparation (|1> on first qubit, others in superposition)
+# shor.x(qr[0]) # Uncomment to set the first qubit to |1> (optional)
 
 shor.cx(qr[0],qr[3])
 shor.cx(qr[0],qr[6])
@@ -72,8 +71,10 @@ shor.barrier(qr)
 
 shor.measure(qr[0],cr[0])
 
+# Section - Circuit Visualization
 shor.draw("mpl")
 
+# Section - Circuit Execution and Result Analysis
 # Run shor code circuit
 qc_compiled = transpile(shor, backend)
 job_sim = backend.run(qc_compiled, shots=1024)
