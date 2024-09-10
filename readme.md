@@ -16,6 +16,11 @@ source .venv/bin/activate
 pip install qiskit-ibm-runtime
 ```
 
+Unix users may need to install `PyQt5` if they dont use Jupyter to show plots
+```
+pip install PyQt5
+```
+
 # Step 2: Get API Key from IBM Quantum Dashboard
 
 Go to the IBM Quantum Dashboard website (https://quantum-computing.ibm.com/).
