@@ -16,6 +16,11 @@ source .venv/bin/activate
 pip install qiskit-braket-provider boto3 amazon-braket-sdk
 ```
 
+Unix users may need to install `PyQt5` if they dont use Jupyter to show plots
+```
+pip install PyQt5
+```
+
 # Step 2: Creating Access key
 First, click on your username (1), then click on Security credentials (2). 
 ![Locate Credentials section](./images/amazon%20menu.PNG)
