@@ -1,8 +1,0 @@
-qiskit
-matplotlib
-pylatexenc
-numpy
-python-dotenv
-ipykernel
-qiskit_aer
-qiskit-ibm-runtime
