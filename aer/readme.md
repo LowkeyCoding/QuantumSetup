@@ -16,6 +16,11 @@ source .venv/bin/activate
 pip install qiskit-aer
 ```
 
+Unix users may need to install `PyQt5` if they dont use Jupyter to show plots
+```
+pip install PyQt5
+```
+
 # Step 2: Running a quantum circuit.
 Below you will find a simple bell-state quantum circuit that can be used to test your installation.
 ```python
