@@ -1,12 +1,14 @@
 cff-version: 1.2.0
-message: ""
+message: "If you use this software, please cite it as below."
 authors:
 - family-names: "Walsted"
   given-names: "Loke"
+  orcid: "https://orcid.org/0009-0002-1758-4594"
 - family-names: "Larsen"
   given-names: "Torben"
   orcid: "https://orcid.org/0000-0002-7378-5967"
-title: "A Collection of guides to setup Quantum programming using Qisikt"
+title: "Installation Guide for Qiskit Based Quantum Programming"
 version: 1.0.0
-date-released: 2024-05-29
+date-released: 2024-11-13
+doi: 10.5281/zenodo.14133924
 url: "https://github.com/LowkeyCoding/QuantumSetup"
