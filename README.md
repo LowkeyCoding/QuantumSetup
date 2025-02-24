@@ -13,6 +13,10 @@ With cmd use
 ```
 powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/setup.ps1 | iex"
 ```
+### Known Issues
+- Powershell 5 and older are unable to run the install script.
+  - Go to [upgrade guide](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.5) to upgrade powershell.
+
 ### Linux/MacOS
 ```
 curl -LsSf https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/setup.sh | sh
