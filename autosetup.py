@@ -110,7 +110,7 @@ def guide_to_run_examples(examples, project_dir):
         print(green(f"\tuv run {sample_name}"))
 
 def create_project():
-    print("Welcome to the Python Project Setup!")
+    print("Welcome to the Quantum Project Setup!")
     project_name = get_project_name()
     
     # Create project directory
