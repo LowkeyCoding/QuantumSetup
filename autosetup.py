@@ -26,19 +26,19 @@ def get_project_name():
     return project_name
 
 def select_examples():
-    exendencies = {
+    examples = {
         'AER': False,
         'IBM': False,
         'Azure': False,
         'Braket': False
     }
 
-    for ex in exendencies:
+    for ex in examples:
         response = input(f"Do you want to include {ex}? (y/n): ").strip().lower()
         if response == 'y':
-            exendencies[ex] = True
+            examples[ex] = True
     
-    return [ex for ex, included in exendencies.items() if included]
+    return [ex for ex, included in examples.items() if included]
 
 def create_project_directory(project_name):
     # Create project directory
