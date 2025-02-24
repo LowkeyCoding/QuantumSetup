@@ -21,6 +21,10 @@ uv run --with "requests,colorama" --python 3.12.9 "%USERPROFILE%\.local\bin\auto
 
 # Write the content to a new CMD script file in the target directory
 $scriptPath = "$targetDir\quantum_init.cmd"
+
+# Remove old version
+Remove-Item -Path $scriptPath 
+
 Set-Content -Path $scriptPath -Value $scriptContent
 
 Write-Output "Generated CMD script: $scriptPath"
