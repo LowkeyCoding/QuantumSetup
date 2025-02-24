@@ -2,7 +2,23 @@
 
 Welcome to the Quantum Computing Setup Guide! This repository contains code for setting up python for quantum computing using Qiskit.
 
-## Basic setup
+## Easy setup
+
+### Windows 
+Using powershell run
+```
+irm https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/setup.ps1 | iex 
+```
+With cmd use 
+```
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/setup.ps1 | iex"
+```
+### Linux/MacOS
+```
+curl -LsSf https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/setup.sh | sh
+```
+
+## Manual setup (without uv)
 
 ###  Step 1: Download Python 3
 Download and install Python 3 from the official Python website: [Python.org](https://www.python.org/downloads/). Follow the installation instructions provided for your operating system.
