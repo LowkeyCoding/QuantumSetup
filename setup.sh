@@ -12,6 +12,8 @@ mkdir -p "$TARGET_DIR"
 SCRIPT_CONTENT='#!/bin/sh
 uv run --with "requests,colorama" $HOME/.local/bin/autosetup.py'
 
+# Remove old version of quantum init
+rm $TARGET_DIR/quantum_init
 # Write the content to a new script file in the target directory
 echo "#!/bin/sh" > "$TARGET_DIR/quantum_init"
 echo "uv run --with \"requests,colorama\" --python 3.12.9 $TARGET_DIR/autosetup.py" > "$TARGET_DIR/quantum_init"
