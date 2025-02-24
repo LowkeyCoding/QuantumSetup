@@ -97,7 +97,8 @@ def guide_to_run_examples(examples, project_dir):
 
     # Highlight the environment activation command
     print("\nTo activate the virtual environment, run:")
-    print(green(f"\tcd {os.path.join("./",project_dir)}"))
+    path = {os.path.join("./",project_dir)}
+    print(green("\tcd " + path))
     if is_posix_os():
         print(green(f"\tsource {os.path.join('.venv', 'bin', 'activate')}"))
         if is_wayland():
