@@ -69,6 +69,17 @@ def download_pyproject(project_dir):
     else:
         print(red("Failed to download pyproject.toml."))
 
+def download_readme(project_dir):
+    url = "https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/Q_README.md"
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        with open(os.path.join(project_dir, 'README.md'), 'wb') as f:
+            f.write(response.content)
+        print("Successfully downloaded README.md.")
+    else:
+        print(red("Failed to download README.md."))
+
 def download_example(name, project_dir):
     # Convert exendency name to lowercase for the URL
     url = f"https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/master/{name.lower()}/sample.py"
@@ -133,6 +144,8 @@ def create_project():
     # Download the pyproject.toml file
     download_pyproject(project_dir)
 
+    download_readme(project_dir)
+    
     # Download sample.py for each selected exendency
     for ex in examples:
         download_example(ex, project_dir)
