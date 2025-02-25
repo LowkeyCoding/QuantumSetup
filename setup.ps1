@@ -30,3 +30,4 @@ if (Test-Path -Path $scriptPath) {
 Set-Content -Path $scriptPath -Value $scriptContent
 Write-Output "Installing to $targetDir"
 Write-Output "  $scriptName"
+Write-Output "To create a new quantum project reopen the terminal and run the command: qproject"
