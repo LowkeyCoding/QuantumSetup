@@ -1,6 +1,7 @@
 # Quantum Computing Setup Guide
 
 Welcome to the Quantum Computing Setup Guide! This repository contains code for setting up python for quantum computing using Qiskit.
+This guide has a companion document explaning the [setup](https://zenodo.org/records/14133924).
 
 ## Easy setup
 
