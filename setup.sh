@@ -25,3 +25,4 @@ chmod +x "$TARGET_DIR/$TARGET_NAME"
 
 echo "Installing to $TARGET_DIR"
 echo "  $TARGET_NAME"
+echo "To create a new quantum project reopen the terminal and run the command: $TARGET_NAME"
