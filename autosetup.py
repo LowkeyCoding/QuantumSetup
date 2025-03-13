@@ -247,7 +247,7 @@ def create_virtual_environment(project_dir):
     except subprocess.CalledProcessError:
         print_red("Failed to create virtual environment.")
 
-def guide_to_run_examples(examples, project_dir):
+def guide_to_run_examples(examples, project_dir, notebook):
     print("\nTo activate the virtual environment:")
     print_green(f"  cd {os.path.join('./', project_dir)}")
     if is_posix_os():
@@ -256,8 +256,10 @@ def guide_to_run_examples(examples, project_dir):
             print_yellow("  When using Wayland: export QT_QPA_PLATFORM=xcb")
     else:
         print_green(f"  {os.path.join('.venv', 'Scripts', 'activate')}")
-    
-    print("\nRun examples with:")
+    if not notebook:
+        print("\nRun examples with:")
+        for ex in examples:
+            print_green(f"  uv run {ex['backend'].lower()}_{ex['name']}.py")
     print("\nPress any key to exit...")
     input()
 
@@ -285,7 +287,7 @@ def main():
     for example in examples:
         download_example(example, project_dir)
     create_virtual_environment(project_dir)
-    guide_to_run_examples(examples, project_dir)
+    guide_to_run_examples(examples, project_dir, args.notebook)
     
 if __name__ == "__main__":
     main()
