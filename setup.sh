@@ -15,7 +15,7 @@ if [ -e "$TARGET_DIR/$TARGET_NAME" ]; then
 fi
 # Write the content to a new script file in the target directory
 echo "#!/bin/sh" > "$TARGET_DIR/$TARGET_NAME"
-echo "uv run --with \"colorama,requests,readchar\" --python 3.12.9 $TARGET_DIR/autosetup.py" > "$TARGET_DIR/qproject"
+echo "uv run --with \"colorama,requests,readchar\" --python 3.12.9 $TARGET_DIR/autosetup.py $@" " > "$TARGET_DIR/qproject"
 # Make the new script executable
 chmod +x "$TARGET_DIR/$TARGET_NAME"
 
