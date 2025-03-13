@@ -16,7 +16,7 @@ if (-Not (Test-Path -Path $targetDir)) {
 # Define the content of the new CMD script
 $scriptContent = @"
 @echo off
-uv run --with "colorama,requests,readchar" --python 3.12.9 "%USERPROFILE%\.local\bin\autosetup.py"
+uv run --with "colorama,requests,readchar" --python 3.12.9 "%USERPROFILE%\.local\bin\autosetup.py" "$@"
 "@
 
 # Write the content to a new CMD script file in the target directory
