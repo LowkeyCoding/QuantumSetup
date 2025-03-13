@@ -8,10 +8,6 @@ TARGET_NAME="qproject"
 # Create the target directory if it doesn't exist
 mkdir -p "$TARGET_DIR"
 
-# Define the content of the new script
-SCRIPT_CONTENT='#!/bin/sh
-uv run --with "requests,colorama" $HOME/.local/bin/autosetup.py'
-
 # Remove old version of quantum init
 if [ -e "$TARGET_DIR/$TARGET_NAME" ]; then
     echo "Removing old version of: $TARGET_DIR/$TARGET_NAME"
@@ -19,7 +15,7 @@ if [ -e "$TARGET_DIR/$TARGET_NAME" ]; then
 fi
 # Write the content to a new script file in the target directory
 echo "#!/bin/sh" > "$TARGET_DIR/$TARGET_NAME"
-echo "uv run --with \"requests,colorama\" --python 3.12.9 $TARGET_DIR/autosetup.py" > "$TARGET_DIR/qproject"
+echo "uv run --with \"colorama,requests,readchar\" --python 3.12.9 $TARGET_DIR/autosetup.py" > "$TARGET_DIR/qproject"
 # Make the new script executable
 chmod +x "$TARGET_DIR/$TARGET_NAME"
 
