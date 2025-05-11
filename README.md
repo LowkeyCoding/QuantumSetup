@@ -17,6 +17,8 @@ powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/Low
 ### Known Issues
 - Powershell 5 and older are unable to run the install script.
   - Go to [upgrade guide](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.5) to upgrade powershell.
+- Symengine DLL failed to load
+  - Go to [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170) and download the latest version.
 
 ### Linux/MacOS
 ```
