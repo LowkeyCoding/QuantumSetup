@@ -1,13 +1,12 @@
 from qiskit_aer import AerSimulator
 from qiskit import QuantumCircuit, transpile, QuantumRegister, ClassicalRegister
 from qiskit.visualization import plot_histogram
-from qiskit_ibm_runtime import QiskitRuntimeService
+from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
 from matplotlib import pyplot
 from dotenv import load_dotenv
 from random import randbytes
 import numpy as np
 import os
-import numpy as np
 # Section - Setup
 
 load_dotenv()
@@ -17,6 +16,7 @@ provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quan
 # Selecting a backend
 real_backend = provider.backend("ibm_brisbane")
 backend = AerSimulator.from_backend(real_backend)
+sampler = Sampler(backend)
 
 key_len = 8  # for a local backend n can go as up as 23, after that it raises a Memory Error
 
@@ -66,10 +66,10 @@ def run_circuit(circ):
     # Transpile circuit to work with the current backend.
     qc_compiled = transpile(circ, backend)
     # Run the job
-    job_sim = backend.run(qc_compiled, shots=1)
+    job_sim = sampler.run([qc_compiled], shots=1)
     # Get the result
     result_sim = job_sim.result()
-    return result_sim.get_counts()
+    return result_sim[0].data.cr.get_counts()
 
 
 def get_shared_key(key_a, key_b, basis_a, basis_b):

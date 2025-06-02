@@ -2,7 +2,7 @@
 from qiskit_aer import AerSimulator
 from qiskit import QuantumCircuit, transpile, QuantumRegister, ClassicalRegister
 from qiskit.visualization import plot_histogram
-from qiskit_ibm_runtime import QiskitRuntimeService
+from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
 from matplotlib import pyplot
 from dotenv import load_dotenv
 from random import randbytes
@@ -21,6 +21,7 @@ provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quan
 # Selecting a backend
 real_backend = provider.backend("ibm_brisbane")
 backend = AerSimulator.from_backend(real_backend)
+sampler = Sampler(backend)
 
 # Define a graph representing a square. Each node is identified by an integer.
 graph = {
@@ -111,7 +112,7 @@ def get_expectation(graph, backend, shots=512):
         """Executes the QAOA circuit with given parameters and returns the expectation value."""
         qc = create_qaoa_circ(graph, theta)
         qc_compiled = transpile(qc, backend)
-        job_sim = backend.run(qc_compiled, shots=shots)
+        job_sim = sampler.run([qc_compiled], shots=shots)
         counts = job_sim.result().get_counts(qc_compiled)
         return compute_expectation(counts, graph)
     return execute_circ
@@ -136,7 +137,7 @@ qc_res.draw("mpl")
 # Section - Circuit Execution and Result Analysis
 # Execute the circuit and visualize results
 qc_compiled = transpile(qc_res, backend)
-job_sim = backend.run(qc_compiled, shots=512)
+job_sim = sampler.run([qc_compiled], shots=512)
 counts = job_sim.result().get_counts(qc_compiled)
 
 # Expected spikes at the solutions ["1010", "0101"]

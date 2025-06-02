@@ -27,11 +27,11 @@ circuit.draw('mpl')
 qc_compiled = transpile(circuit, backend)
 
 # Run the job
-job_sim = backend.run(qc_compiled, shots=1024)
+job_sim = sampler.run([qc_compiled], shots=1024)
 
 # Get the result
 result_sim = job_sim.result()
-counts = result_sim.get_counts(qc_compiled)
+counts = result_sim[0].data.cr.get_counts()
 
 # Plot the result
 plot_histogram(counts)

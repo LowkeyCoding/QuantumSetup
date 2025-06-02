@@ -1,7 +1,7 @@
 from qiskit_aer import AerSimulator
 from qiskit import QuantumCircuit, transpile, QuantumRegister, ClassicalRegister
 from qiskit.visualization import plot_histogram
-from qiskit_ibm_runtime import QiskitRuntimeService
+from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
 from matplotlib import pyplot
 from dotenv import load_dotenv
 from random import randbytes
@@ -16,6 +16,7 @@ provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quan
 # Selecting a backend
 real_backend = provider.backend("ibm_brisbane")
 backend = AerSimulator.from_backend(real_backend)
+sampler = Sampler(backend)
 
 num_bits = 4 # number of random bits to generate
 
@@ -34,9 +35,9 @@ qrng.draw("mpl")
 
 # Section - Circuit Execution and Result Analysis
 qc_compiled = transpile(qrng, backend)
-job_sim = backend.run(qc_compiled, shots=1024)
+job_sim = sampler.run([qc_compiled], shots=1024)
 result_sim = job_sim.result()
-counts = result_sim.get_counts(qc_compiled)
+counts = result_sim[0].data.cr.get_counts()
 
 # Plot the result
 plot_histogram(counts)
