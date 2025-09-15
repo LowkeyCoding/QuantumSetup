@@ -205,6 +205,7 @@ def create_dotenv(project_dir):
     with open(os.path.join(project_dir, '.env'), 'w') as f:
         f.write("""
 ibm_token=YOUR_IBM_TOKEN
+ibm_crn=YOUR_IBM_CRN
 azure_connection=YOUR_AZURE_CONNECTION_STRING
 aws_access=YOUR_AWS_ACCESS_KEY
 aws_secret=YOUR_AWS_SECRET_KEY

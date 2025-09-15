@@ -15,7 +15,10 @@ provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_clou
 # Simulators will be depricated on 15/05/2024 see Aer for local simulation
 backend = provider.least_busy(operational=True, simulator=False)
 
-circ = QuantumCircuit(3, 3)
+qr = QuantumRegister(3, name='qr')
+cr = ClassicalRegister(3, name='cr')
+
+circ = QuantumCircuit(qr, cr)
 circ.name = "My First Quantum Program"
 circ.h(0)
 circ.cx(0, 1)

@@ -14,7 +14,10 @@ provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_clou
 real_backend = provider.least_busy(operational=True, simulator=False)
 backend = AerSimulator.from_backend(real_backend)
 
-circuit = QuantumCircuit(3, 3)
+qr = QuantumRegister(3, name='qr')
+cr = ClassicalRegister(3, name='cr')
+
+circuit = QuantumCircuit(qr, cr)
 circuit.name = "My First Quantum Program"
 circuit.h(0)
 circuit.cx(0, 1)

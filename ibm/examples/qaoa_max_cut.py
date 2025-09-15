@@ -113,7 +113,7 @@ def get_expectation(graph, backend, shots=512):
         qc = create_qaoa_circ(graph, theta)
         qc_compiled = transpile(qc, backend)
         job_sim = sampler.run([qc_compiled], shots=shots)
-        counts = job_sim.result().get_counts(qc_compiled)
+        counts = job_sim.result()[0].data.meas.get_counts()
         return compute_expectation(counts, graph)
     return execute_circ
 
@@ -138,7 +138,7 @@ qc_res.draw("mpl")
 # Execute the circuit and visualize results
 qc_compiled = transpile(qc_res, backend)
 job_sim = sampler.run([qc_compiled], shots=512)
-counts = job_sim.result().get_counts(qc_compiled)
+counts = job_sim.result()[0].data.meas.get_counts()
 
 # Expected spikes at the solutions ["1010", "0101"]
 plot_histogram(counts)

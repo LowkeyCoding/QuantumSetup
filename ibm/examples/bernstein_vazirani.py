@@ -25,8 +25,8 @@ a = 42 # the hidden integer
 a = a % 2**(qubits)
 
 # Section - Quantum Register and Classical Register Initialization
-qr = QuantumRegister(qubits)
-cr = ClassicalRegister(qubits)
+qr = QuantumRegister(qubits, name='qr')
+cr = ClassicalRegister(qubits, name='cr')
 
 circ = QuantumCircuit(qr, cr)
 
