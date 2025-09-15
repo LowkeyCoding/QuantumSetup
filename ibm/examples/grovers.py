@@ -11,7 +11,7 @@ import os
 # Section - Backend and Qubit Register Initialization
 load_dotenv()
 
-provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quantum")
+provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_cloud", instance=os.environ["ibm_crn"])
 
 # Selecting a backend
 real_backend = provider.backend("ibm_brisbane")

@@ -40,7 +40,7 @@ import os
 
 load_dotenv()
 
-provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quantum")
+provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_cloud", instance=os.environ["ibm_crn"])
 ```
 
 With these two steps completed, you'll have Qiskit installed and configured to use IBM Quantum hardware. You can then start experimenting with quantum circuits and running them on real quantum computers provided by IBM.
@@ -58,7 +58,7 @@ import os
 
 load_dotenv()
 
-provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quantum")
+provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_cloud", instance=os.environ["ibm_crn"])
 
 # Selecting a backend
 # Use simulators to test before running it on real hardware.
@@ -110,10 +110,10 @@ import os
 
 load_dotenv()
 
-provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quantum")
+provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_cloud", instance=os.environ["ibm_crn"])
 
 # Selecting a backend hardware from ibm.,
-real_backend = provider.backend("ibm_brisbane", channel="ibm_quantum")
+real_backend = provider.backend("ibm_brisbane", channel="ibm_cloud", instance=os.environ["ibm_crn"])
 # Instantiate Aer simulator with hardware backend.
 backend = AerSimulator.from_backend(real_backend)
 ```

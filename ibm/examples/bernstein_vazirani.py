@@ -11,10 +11,10 @@ import os
 # Section - Setup Circuit Parameters
 load_dotenv()
 
-provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quantum")
+provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_cloud", instance=os.environ["ibm_crn"])
 
 # Selecting a backend
-real_backend = provider.backend("ibm_brisbane")
+real_backend = provider.least_busy(operational=True, simulator=False)
 backend = AerSimulator.from_backend(real_backend)
 sampler = Sampler(backend)
 

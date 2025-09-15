@@ -8,12 +8,12 @@ import os
 
 load_dotenv()
 
-provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_quantum")
+provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_cloud", instance=os.environ["ibm_crn"])
 
 # Selecting a backend
 # Use simulators to test before running it on real hardware.
 # Simulators will be depricated on 15/05/2024 see Aer for local simulation
-backend = provider.least_busy(operational=True, simulator=False, min_num_qubits=127)
+backend = provider.least_busy(operational=True, simulator=False)
 
 circ = QuantumCircuit(3, 3)
 circ.name = "My First Quantum Program"
