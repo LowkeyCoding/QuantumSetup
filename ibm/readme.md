@@ -21,15 +21,23 @@ Unix users may need to install `PyQt5` if they dont use Jupyter to show plots
 pip install PyQt5
 ```
 
-# Step 2: Get API Key from IBM Quantum Dashboard
+# Step 2: Get API key and CRN from IBM Quantum Dashboard
 
-Go to the IBM Quantum Dashboard website (https://quantum-computing.ibm.com/).
+Go to the IBM Quantum Dashboard website (https://quantum.cloud.ibm.com).
 If you don't have an account, sign up for one. Otherwise, log in.
-Once logged in, navigate to your dashboard. You'll find your API key there.
-Copy your API key. This will be used to authenticate your access to IBM Quantum services.
-![alt text](./images/api_key.png "Title")
+Then go to (https://quantum.cloud.ibm.com/instances) and create a new instance.
+![alt text](./images/init_create_instance.png "Title")
+Then fill out the form and press next twice
+![alt text](./images/create_instance.png "Title")
+After creating the instance you should be redirected to (https://quantum.cloud.ibm.com/) with the new instance in sidebar.
+Then the first step is to copy and save CRN to your `.env` file as `ibm_crn=Your CRN token here`
+Then the second step is to click the create API key button.
+![alt text](./images/crn_create_api.png "Title")
+Then give the api key a name and click create.
+![alt text](./images/create_api_key.png "Title")
+Then copy the API key to your `.env` file as `ibm_token=Your IBM token here`
+![alt text](./images/copy_api_key.png "Title")
 
-To login using python add the line `ibm_token=Your API Token Here` to the `.env` file.
 ```python
 from qiskit import QuantumCircuit, transpile
 from qiskit.visualization import plot_histogram
@@ -113,9 +121,9 @@ load_dotenv()
 provider = QiskitRuntimeService(token=os.environ["ibm_token"], channel="ibm_cloud", instance=os.environ["ibm_crn"])
 
 # Selecting a backend hardware from ibm.,
-real_backend = provider.backend("ibm_brisbane", channel="ibm_cloud", instance=os.environ["ibm_crn"])
+real_backend = provider.least_busy(operational=True, simulator=False)
 # Instantiate Aer simulator with hardware backend.
 backend = AerSimulator.from_backend(real_backend)
 ```
 
-The full example can be seen [here](https://github.com/LowkeyCoding/QuantumSetup/blob/ibm_backend/sample_noise.py)
+The full example can be seen [here](https://github.com/LowkeyCoding/QuantumSetup/blob/ibm_backend/examples/qrng.py)
