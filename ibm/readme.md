@@ -30,11 +30,14 @@ Then go to (https://quantum.cloud.ibm.com/instances) and create a new instance.
 Then fill out the form and press next twice
 ![alt text](./images/create_instance.png "Title")
 After creating the instance you should be redirected to (https://quantum.cloud.ibm.com/) with the new instance in sidebar.
+
 Then the first step is to copy and save CRN to your `.env` file as `ibm_crn=Your CRN token here`
+
 Then the second step is to click the create API key button.
 ![alt text](./images/crn_create_api.png "Title")
 Then give the api key a name and click create.
 ![alt text](./images/create_api_key.png "Title")
+
 Then copy the API key to your `.env` file as `ibm_token=Your IBM token here`
 ![alt text](./images/copy_api_key.png "Title")
 
@@ -98,7 +101,7 @@ pyplot.show()
 ```
 The example can also be seen [here](https://github.com/LowkeyCoding/QuantumSetup/blob/ibm_backend/sample.py)
 
-# Step 5: Running simulator after the 15th of may
+# Step 5: Running simulator after the 15th of may 2025
 To access advanced simulation capabilities in Qiskit of IBM systems, the `qiskit-aer` package is required.
 
 ```
