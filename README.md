@@ -25,6 +25,12 @@ powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/Low
 curl -LsSf https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/setup.sh | sh
 ```
 
+### IBM, Azure, and Braket backend setup
+- [IBM](https://github.com/LowkeyCoding/QuantumSetup/tree/master/ibm) (10min worth of hardware runtime for free per month)
+- [Azure](https://github.com/LowkeyCoding/QuantumSetup/tree/master/azure)
+- [Braket](https://github.com/LowkeyCoding/QuantumSetup/tree/master/azure)
+
+
 ## Manual setup (without uv)
 
 ###  Step 1: Download Python 3
