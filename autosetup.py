@@ -265,8 +265,9 @@ def guide_to_run_examples(examples, project_dir, notebook):
     input()
 
 def main():
-    parser = argparse.ArgumentParser(description='Process notebook mode')
+    parser = argparse.ArgumentParser(prog='qproject', usage='%(prog)s [options]', description='Qproject is a tool to crate a basic quantum development environment.')
     parser.add_argument('--notebook', action='store_true', help='Run in notebook mode')
+    parser.add_argument('-n','--name', default="", help='Set the project name')
     args = parser.parse_args()
     clear_screen()
     print("Welcome to the Quantum Project Setup!")
@@ -274,7 +275,12 @@ def main():
         print("Running in notebook mode\n")
     else:
         print("")
-    project_name = get_project_name()
+    project_name = "" 
+    if args.name:
+        project_name = args.name
+    else:
+        project_name = get_project_name()
+
     print("\x1b[?25l") # Hide cursor
     examples = hierarchical_menu(args.notebook)
     print("\x1b[?25h") # show cursor
