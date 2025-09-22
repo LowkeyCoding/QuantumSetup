@@ -6,6 +6,7 @@ import readchar
 import sys
 import argparse
 
+VERSION = "1"
 colorama_init()
 
 def clear_screen():
@@ -34,18 +35,36 @@ def get_project_name():
 
 def fetch_backend_examples():
     try:
-        url = "https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/examples.csv"
+        url = "https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/backend_data.txt"
         response = requests.get(url)
+        nb_data = {}
+        ex_data = {}
         if response.status_code == 200:
-            return list(map(str.strip, response.text.split(",")))
-        return []
+            for line in response.text.splitlines():
+                name, data = line.split(":")
+                data = data.strip()
+                if name == "Version" and data != VERSION:
+                    print(f"Version mismatch in example data: expected v{VERSION} got v{data}")
+                    print("Go to https://github.com/LowkeyCoding/QuantumSetup and update qproject")
+                    exit()
+                if name.startswith("IPYNB"):
+                    nb_data[name[6:]] = list(map(str.strip, data.split(",")))
+                elif name !="Version":
+                    ex_data[name] = list(map(str.strip, data.split(",")))
+            return (nb_data,ex_data)
+        return None
     except Exception as e:
         return None
 
-def build_menu_structure():
+def build_menu_structure(nb_mode):
     menu = []
-    backends = ['AER', 'IBM', 'Azure', 'Braket']
-    examples = fetch_backend_examples() or []
+    notebook, examples = fetch_backend_examples()
+    backends = examples
+    if nb_mode:
+        backends = notebook
+    if notebook == None and examples == None:
+        print_red("No examples or notebook examples where found.")
+        print_red("Go to https://github.com/LowkeyCoding/QuantumSetup for more information.")
     for backend in backends:
         backend_entry = {
             'name': backend,
@@ -53,7 +72,7 @@ def build_menu_structure():
             'children': [],
             'selected': False
         }
-        for ex in examples:
+        for ex in backends[backend]:
             backend_entry['children'].append({
                 'name': ex,
                 'selected': False,
@@ -106,12 +125,17 @@ class MenuNavigator:
         for idx, item in enumerate(items):
             # Build prefix and symbols
             prefix = "  " * level
-            checkbox = "[X]" if item['selected'] else "[ ]"
+            children = item.get('children')
+            checkbox = "[X]" if (item['selected'] and not children) else "[ ]"
             symbol = ""
-            
-            if item.get('children'):
-                symbol = "▼ " if item['expanded'] else "▶ "
-            
+            if children:
+                symbol = "▶ "
+                if all(c.get('selected') for c in children):
+                    checkbox = "[X]"
+                elif any(c.get('selected') for c in children):
+                    checkbox = "[*]"
+
+                
             # Create left-aligned text part
             text_line = f"{prefix}{symbol}{item['name']}"
             
@@ -191,9 +215,9 @@ class MenuNavigator:
         return selected
 
 
-def hierarchical_menu(notebook):
-    menu = build_menu_structure()
-    navigator = MenuNavigator(menu, notebook)
+def hierarchical_menu(nb_mode):
+    menu = build_menu_structure(nb_mode)
+    navigator = MenuNavigator(menu, nb_mode)
     return navigator.run()
 
 def create_project_directory(project_name):
@@ -285,6 +309,7 @@ def main():
     examples = hierarchical_menu(args.notebook)
     print("\x1b[?25h") # show cursor
     print("Creating project directory")
+    exit()
     project_dir = create_project_directory(project_name)
     print("Creating .env\n")
     create_dotenv(project_dir)

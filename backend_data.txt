@@ -1,9 +1,9 @@
 Version:1
-AER: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz,unique_aer
+AER: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 IBM: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Azure: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Braket: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
-IPYNB_AER: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz,unique_aer_nb
+IPYNB_AER: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 IPYNB_IBM: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 IPYNB_Azure: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 IPYNB_Braket: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
