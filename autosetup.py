@@ -309,7 +309,6 @@ def main():
     examples = hierarchical_menu(args.notebook)
     print("\x1b[?25h") # show cursor
     print("Creating project directory")
-    exit()
     project_dir = create_project_directory(project_name)
     print("Creating .env\n")
     create_dotenv(project_dir)
