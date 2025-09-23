@@ -27,6 +27,7 @@ curl -LsSf https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/head
 
 #### Known Issues
 - If using Wayland the following environment variable has to be set `QT_QPA_PLATFORM=xcb`
+- If curl is installed using snap it may produce a warning causing the script to fail.
 
 ### IBM, Azure, and Braket backend setup
 - [IBM](https://github.com/LowkeyCoding/QuantumSetup/tree/master/ibm) (10min worth of hardware runtime for free per month)
