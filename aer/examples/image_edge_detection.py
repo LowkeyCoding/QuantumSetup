@@ -80,32 +80,27 @@ def scan_x(image_norm,amp_perm,total_qb, backend, shots):
 # Get the amplitude ancoded pixel values
 # Horizontal: Original image
 image_norm_h = amplitude_encode(image)
-
+print(image_norm_h)
 
 # Vertical: Transpose of Original image
 image_norm_v = amplitude_encode(image.T)
+print(image_norm_v)
 
 counts_v = scan_x(image_norm_v,D2n_1,total_qb, backend,SHOTS)
 counts_h = scan_x(image_norm_h,D2n_1,total_qb, backend,SHOTS)
 
-for i in range(2**data_qb):
-    key = f'{2*i+1:07b}'
-    if key in counts_h:
-        counts_h[key] = counts_h[key]/SHOTS
-    else:
-        counts_h[key] = 0
-    if key in counts_v:
-        counts_v[key] = counts_v[key]/SHOTS
-    else:
-        counts_v[key] = 0 
+# Get the measurement counts from the result
+keys_h = counts_h.keys()
+keys_v = counts_v.keys()
 
-edge_scan_small_h = np.array([counts_h[f'{2*i+1:07b}'] for i in range(2**data_qb)]).reshape(M, N)
-edge_scan_small_v = np.array([counts_v[f'{2*i+1:07b}'] for i in range(2**data_qb)]).reshape(M, N).T
+edge_scan_h = np.array([counts_h[f'{2*i+1:b}'.zfill(total_qb)] if f'{2*i+1:b}'.zfill(total_qb) in keys_h else 0 for i in range(2**data_qb)]).reshape(M, N)
+edge_scan_v = np.array([counts_v[f'{2*i+1:b}'.zfill(total_qb)] if f'{2*i+1:b}'.zfill(total_qb) in keys_v else 0 for i in range(2**data_qb)]).reshape(M, N).T
 
-plot_image_sub([edge_scan_small_h, edge_scan_small_v], ['Horizontal scan output','Vertical scan output'],1,2,5)
-edge_detected_image_small = edge_scan_small_h + edge_scan_small_v
+
+plot_image_sub([edge_scan_h, edge_scan_v], ['Horizontal scan output','Vertical scan output'],1,2,5)
+edge_detected_image = edge_scan_h + edge_scan_v
 
 # Plotting the original and edge-detected images
-plot_image_sub([edge_detected_image_small, image], ['Full Edge Detected Image', 'Original Image'],1,2,6)
+plot_image_sub([edge_detected_image, image], ['Full Edge Detected Image', 'Original Image'],1,2,6)
 
 plt.show()
