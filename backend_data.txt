@@ -1,6 +1,6 @@
 Version:1
-AER: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
-IBM: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
+AER: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz,image_edge_detection
+IBM: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz,image_edge_detection
 Azure: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Braket: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 IPYNB_AER: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
