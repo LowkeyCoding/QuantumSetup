@@ -7,4 +7,4 @@ Qiskit|IPYNB_AER: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,gh
 Qiskit|IPYNB_IBM: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Qiskit|IPYNB_Azure: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Qiskit|IPYNB_Braket: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
-Pennylane|default:grover,ghz,qrng
+Pennylane|default:bb84,grover,ghz,qrng
