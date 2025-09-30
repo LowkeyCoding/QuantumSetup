@@ -10,7 +10,7 @@ def get_status(acc, key_a, eve=False):
     if len(key_a) == 0:
         return "failed" + (" no shared key found" if eve else "")
     if acc != len(key_a):
-        return "failed "  + (" shared keys are not equal (Eve Detected)" if eve else "")
+        return "failed"  + (" shared keys are not equal (Eve Detected)" if eve else "")
     return "succeeded" + (" Eve was not detected" if eve else "")
 
 def prep_key_state(key):
