@@ -1,0 +1,43 @@
+[project]
+name = "pennylane_demo"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.10.6",
+    "pyqt6>=6.9.1; sys_platform == 'linux'",
+    "ipykernel>=6.30.1",
+    "python-dotenv>=1.1.1"
+]
+
+[project.optional-dependencies]
+cpu = [
+  "pennylane>=0.42.3"
+]
+
+gpu = [
+  "pennylane-lightning-gpu>=0.42.0",
+  "custatevec_cu12>=1.10.0"
+]
+
+tensor = [
+  "pennylane-lightning-tensor>=0.42.0",
+  "cutensornet-cu12>=2.9.0"
+]
+
+qiskit = [
+  "pennylane-qiskit>=0.42.0",
+  "qiskit-ibm-runtime>=0.9.1"
+]
+
+
+
+[tool.uv]
+conflicts = [
+  [
+    { extra = "cpu" },
+    { extra = "gpu" },
+    { extra = "tensor" },
+  ],
+]
