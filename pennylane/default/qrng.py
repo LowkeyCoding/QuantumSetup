@@ -23,6 +23,10 @@ def to_mpl(samples):
         mpl_bins.append(s_v)
     return mpl_bins
 
+qml.draw_mpl(circuit)()
 result = circuit()
-plt.hist(to_mpl(result), rwidth=0.9)
-plt.show()
+
+names = list(result.keys())
+values = list(result.values())
+
+plt.bar(names, values)

@@ -12,15 +12,12 @@ def circuit():
     qml.CNOT(wires=[1, 2])
     return qml.sample()
 
-def to_mpl(samples):
-    mpl_bins =  []
-    for sample in samples:
-        s_v = ""
-        for v in sample:
-            s_v += str(v)
-        mpl_bins.append(s_v)
-    return mpl_bins
-
+qml.draw_mpl(circuit)()
 result = circuit()
-plt.hist(to_mpl(result))
+
+names = list(result.keys())
+values = list(result.values())
+
+plt.bar(names, values)
+
 plt.show()
