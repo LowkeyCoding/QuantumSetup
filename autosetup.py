@@ -6,7 +6,7 @@ import readchar
 import sys
 import argparse
 
-VERSION = "1"
+VERSION = "2"
 colorama_init()
 
 def clear_screen():
@@ -33,86 +33,82 @@ def is_wayland():
 def get_project_name():
     return input("Enter your project name: ")
 
-def fetch_backend_examples():
+def fetch_simulator_data():
     try:
         url = "https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/backend_data.txt"
         response = requests.get(url)
-        nb_data = {}
-        ex_data = {}
+        data_res = {}
         if response.status_code == 200:
-            for line in response.text.splitlines():
-                name, data = line.split(":")
+            with open("backend_data.txt") as f:
+                lines = f.readlines()
+            for line in lines: #response.text.splitlines():
+                sim_name, data = line.split(":")
                 data = data.strip()
-                if name == "Version" and data != VERSION:
+                if sim_name == "Version" and data != VERSION:
                     print(f"Version mismatch in example data: expected v{VERSION} got v{data}")
                     print("Go to https://github.com/LowkeyCoding/QuantumSetup and update qproject")
                     exit()
-                if name.startswith("IPYNB"):
-                    nb_data[name[6:]] = list(map(str.strip, data.split(",")))
-                elif name !="Version":
-                    ex_data[name] = list(map(str.strip, data.split(",")))
-            return (nb_data,ex_data)
+                if sim_name != "Version":
+                    sim, name = sim_name.split("|")
+                    if sim not in data_res:
+                        data_res[sim] = {}
+                        data_res[sim]["default"] = {}
+                        data_res[sim]["notebook"] = {}
+                    if name.startswith("IPYNB"):
+                        data_res[sim]["notebook"][name[6:]] = list(map(str.strip, data.split(",")))
+                    elif name !="Version":
+                        data_res[sim]["default"][name] = list(map(str.strip, data.split(",")))
+            return data_res
         return None
     except Exception as e:
+        #print(e)
         return None
 
 def build_menu_structure(nb_mode):
-    menu = []
-    notebook, examples = fetch_backend_examples()
-    backends = examples
+    sim_menu = []
+    backend_menus = {}
+    sim_data = fetch_simulator_data()
+    ft = "default"
     if nb_mode:
-        backends = notebook
-    if notebook == None and examples == None:
+        ft = "notebook"
+    if sim_data == None:
         print_red("No examples or notebook examples where found.")
         print_red("Go to https://github.com/LowkeyCoding/QuantumSetup for more information.")
-    for backend in backends:
-        backend_entry = {
-            'name': backend,
-            'expanded': False,
-            'children': [],
-            'selected': False
+    for sim in sim_data:
+        backend_menus[sim] = []
+
+        for backend in sim_data[sim][ft]:
+            backend_entry = {
+                'name': backend,
+                'expanded': False,
+                'children': [],
+                'selected': False
+            }
+            for example in sim_data[sim][ft][backend]:
+                backend_entry['children'].append({
+                    'name': example,
+                    'selected': False,
+                })
+            backend_menus[sim].append(backend_entry)
+        sim_entry = {
+            "name": sim,
+            "expanded": False,
+            "children": [],
+            "selected": False
         }
-        for ex in backends[backend]:
-            backend_entry['children'].append({
-                'name': ex,
-                'selected': False,
-            })
-        menu.append(backend_entry)
-    return menu
+        sim_menu.append(sim_entry)
+    return (sim_menu, backend_menus)
 
-def display_menu(menu, level=0, parent_indices=None):
-    parent_indices = parent_indices or []
-    for idx, item in enumerate(menu):
-        current_indices = parent_indices + [idx + 1]
-        prefix = "  " * level
-        checkbox = "[X]" if item['selected'] else "[ ]"
-        
-        if item.get('children'):
-            symbol = "▼" if item['expanded'] else "▶"
-            line = f"{prefix}{'.'.join(map(str, current_indices))}. {symbol} {item['name']} {checkbox}"
-            printr(line)
-            if item['expanded']:
-                display_menu(item['children'], level + 1, current_indices)
-        else:
-            line = f"{prefix}{'.'.join(map(str, current_indices))}.   {item['name']} {checkbox}"
-            printr(line)
-
-def get_node_by_indices(menu, indices):
-    current_level = menu
-    for i in indices[:-1]:
-        current_node = current_level[i-1]
-        current_level = current_node.get('children', [])
-    return current_level[indices[-1]-1] if indices else None
 
 class MenuNavigator:
-    def __init__(self, menu, notebook):
+    def __init__(self, menu, allow_multiple=True):
         self.menu = menu
         self.path = []
         self.current_level = menu
         self.selected_idx = 0
         self.running = True
         self.max_width = 79  # Maximum width for menu items
-        self.notebook = notebook
+        self.allow_multiple = allow_multiple
 
     def display(self):
         clear_screen()
@@ -190,11 +186,16 @@ class MenuNavigator:
         item = self.current_level[self.selected_idx]
         if not item.get('children'):
             item['selected'] = not item['selected']
+            
         else:
             new_state = not item['selected']
             item['selected'] = new_state
             for child in item['children']:
                 child['selected'] = new_state
+        if not self.allow_multiple:
+            for idx,item in enumerate(self.current_level):
+                if  idx != self.selected_idx:
+                    item['selected'] = False
 
     def run(self):
         while self.running:
@@ -202,23 +203,23 @@ class MenuNavigator:
             self.handle_input()
         return self.get_selected()
 
-    def get_selected(self):
-        selected = []
-        ext = ".ipynb" if self.notebook else ".py" 
-        for backend in self.menu:
-            for child in backend['children']:
-                if child['selected']:
-                    selected.append({
-                        "backend": backend['name'],
-                        "name": child['name'] + ext
-                    })
-        return selected
+    def get_selected(self, menu = []):
+        menu = menu if menu != [] else self.menu
+        for idx,item in enumerate(menu):
+            if "children" in item.keys() and len(item["children"]) > 0:
+                menu[idx]["children"] = self.get_selected(menu=item["children"])
+        # Backends themselves are not selected when only a child is selected
+        selected = filter(lambda x : x["selected"] or ("children" in x.keys() and len(x["children"]) > 0), menu)
+        return list(selected)
 
 
 def hierarchical_menu(nb_mode):
-    menu = build_menu_structure(nb_mode)
-    navigator = MenuNavigator(menu, nb_mode)
-    return navigator.run()
+    sim_menu,backend_menus = build_menu_structure(nb_mode)
+    simulator_navigator = MenuNavigator(sim_menu, allow_multiple=False)
+    simulator = simulator_navigator.run()[0] # Only one item can be selected
+    backend_navigator = MenuNavigator(backend_menus[simulator["name"]])
+    backends = backend_navigator.run()
+    return (simulator, backends)
 
 def create_project_directory(project_name):
     if not os.path.exists(project_name):
@@ -236,8 +237,12 @@ aws_secret=YOUR_AWS_SECRET_KEY
 aws_region=YOUR_AWS_REGION
 """.strip())
 
-def download_pyproject(project_dir):
-    url = "https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/pyproject.toml"
+def download_pyproject(project_dir, simulator):
+    url = ""
+    if simulator != "Qiskit":
+        url = f"https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/{simulator.lower()}/pyproject.toml"
+    else:
+        url = "https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/refs/heads/master/pyproject.toml"
     response = requests.get(url)
     if response.status_code == 200:
         with open(os.path.join(project_dir, 'pyproject.toml'), 'wb') as f:
@@ -246,12 +251,19 @@ def download_pyproject(project_dir):
     else:
         print_red("Failed to download pyproject.toml\n")
 
-def download_example(example, project_dir):
-    url = f"https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/master/{example['backend'].lower()}/examples/{example['name']}"
+def download_example(example,backend, simulator, project_dir, nb):
+    url = ""
+    ext = ".ipynb" if nb else ".py"
+
+    if simulator != "Qiskit":
+        url = f"https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/master/{simulator.lower()}/{backend.lower()}/{example['name']}"
+    else:
+        url = f"https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/master/{backend.lower()}/examples/{example['name']}"
+    url += ext
     try:
         response = requests.get(url)
         if response.status_code == 200:
-            filename = os.path.join(project_dir, f"{example['backend'].lower()}_{example['name']}")
+            filename = os.path.join(project_dir, f"{backend.lower()}_{example['name']}{ext}")
             with open(filename, 'wb') as f:
                 f.write(response.content)
             print_green(f"  Downloaded {example['name']}")
@@ -272,7 +284,8 @@ def create_virtual_environment(project_dir):
     except subprocess.CalledProcessError:
         print_red("Failed to create virtual environment.")
 
-def guide_to_run_examples(examples, project_dir, notebook):
+def guide_to_run_examples(examples, simulator, project_dir, notebook):
+    ext = ".ipynb" if notebook else ".py"
     print("\nTo activate the virtual environment:")
     print_green(f"  cd {os.path.join('./', project_dir)}")
     if is_posix_os():
@@ -281,10 +294,17 @@ def guide_to_run_examples(examples, project_dir, notebook):
             print_yellow("  When using Wayland: export QT_QPA_PLATFORM=xcb")
     else:
         print_green(f"  {os.path.join('.venv', 'Scripts', 'activate')}")
+    if simulator == "Pennylane":
+        print("\nWhen using Pennylane there are 3 options for standard backend cpu, gpu, tensor")
+        print("To chose use --extra followed by the backend you want to use")
     if not notebook:
         print("\nRun examples with:")
-        for ex in examples:
-            print_green(f"  uv run {ex['backend'].lower()}_{ex['name']}.py")
+        for backend in examples:
+            for example in backend["children"]:
+                if simulator == "Qiskit":
+                    print_green(f"  uv run {backend["name"].lower()}_{example['name']}{ext}")
+                else:
+                    print_green(f"  uv run --extra cpu {backend["name"].lower()}_{example['name']}{ext}")
     print("\nPress any key to exit...")
     input()
 
@@ -306,19 +326,20 @@ def main():
         project_name = get_project_name()
 
     print("\x1b[?25l") # Hide cursor
-    examples = hierarchical_menu(args.notebook)
+    simulator, examples = hierarchical_menu(args.notebook)
     print("\x1b[?25h") # show cursor
     print("Creating project directory")
     project_dir = create_project_directory(project_name)
     print("Creating .env\n")
     create_dotenv(project_dir)
     print("Downloading pyproject.toml\n")
-    download_pyproject(project_dir)
+    download_pyproject(project_dir, simulator["name"])
     print("Downloading Examples")
-    for example in examples:
-        download_example(example, project_dir)
+    for backend in examples:
+        for example in backend["children"]:
+            download_example(example, backend["name"],simulator["name"], project_dir, args.notebook)
     create_virtual_environment(project_dir)
-    guide_to_run_examples(examples, project_dir, args.notebook)
+    guide_to_run_examples(examples, simulator["name"], project_dir, args.notebook)
     
 if __name__ == "__main__":
     main()
