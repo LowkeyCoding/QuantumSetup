@@ -251,6 +251,19 @@ def download_pyproject(project_dir, simulator):
     else:
         print_red("Failed to download pyproject.toml\n")
 
+def download_readme(simulator, project_dir):
+    if simulator != "Qiskit":
+        url = f"https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/master/{simulator.lower()}/README.md"
+    else:
+        url = f"https://raw.githubusercontent.com/LowkeyCoding/QuantumSetup/master/Q_README.md"
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(os.path.join(project_dir, 'README.md'), 'wb') as f:
+            f.write(response.content)
+        print("Downloaded README.md\n")
+    else:
+        print_red("Failed to download README.md\n")
+
 def download_example(example,backend, simulator, project_dir, nb):
     url = ""
     ext = ".ipynb" if nb else ".py"
@@ -334,6 +347,8 @@ def main():
     create_dotenv(project_dir)
     print("Downloading pyproject.toml\n")
     download_pyproject(project_dir, simulator["name"])
+    print("Downloading README.md\n")
+    download_readme(simulator["name"], project_dir)
     print("Downloading Examples")
     for backend in examples:
         for example in backend["children"]:
