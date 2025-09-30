@@ -32,8 +32,11 @@ source .venv/bin/activate
 To add a package use `uv add package_name` where `package_name` is replaced with the python package you want to add to your project.
 
 ## Useful links:
-- https://docs.pennylane.ai/en/stable/
-- https://pennylane.ai/search/?contentType=DEMO&categories=how-to&sort=publication_date
-- https://pennylane.ai/devices
-- https://matplotlib.org/stable/users/index
-- https://matplotlib.org/stable/index.html
+
+* [**Pennylane Documentation**](https://pennylane.ai/devices)
+* [**Pennylane Devices**](https://docs.pennylane.ai/en/stable/)
+* [**Pennylane Examples**](https://pennylane.ai/search/?contentType=DEMO&categories=how-to&sort=publication_date)
+* [**Python Documentation**](https://docs.python.org/3.12/)
+* [**UV Documentation**](https://docs.astral.sh/uv/getting-started/features/#scripts)
+* [**Matplotlib Documentation**](https://matplotlib.org/stable/index.html)
+* [**Numpy Documentation**](https://numpy.org/devdocs/)
