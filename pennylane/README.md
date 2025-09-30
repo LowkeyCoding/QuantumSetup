@@ -28,6 +28,9 @@ If you close the terminal you will no longer be in you projects virutal environm
 source .venv/bin/activate
 ```
 
+## Need extra packages?
+To add a package use `uv add package_name` where `package_name` is replaced with the python package you want to add to your project.
+
 ## Useful links:
 - https://docs.pennylane.ai/en/stable/
 - https://pennylane.ai/search/?contentType=DEMO&categories=how-to&sort=publication_date
