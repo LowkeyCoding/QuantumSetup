@@ -39,9 +39,7 @@ def fetch_simulator_data():
         response = requests.get(url)
         data_res = {}
         if response.status_code == 200:
-            with open("backend_data.txt") as f:
-                lines = f.readlines()
-            for line in lines: #response.text.splitlines():
+            for line in response.text.splitlines():
                 sim_name, data = line.split(":")
                 data = data.strip()
                 if sim_name == "Version" and data != VERSION:
