@@ -210,7 +210,6 @@ class MenuNavigator:
         selected = filter(lambda x : x["selected"] or ("children" in x.keys() and len(x["children"]) > 0), menu)
         return list(selected)
 
-
 def hierarchical_menu(nb_mode):
     sim_menu,backend_menus = build_menu_structure(nb_mode)
     simulator_navigator = MenuNavigator(sim_menu, allow_multiple=False)
@@ -306,16 +305,22 @@ def guide_to_run_examples(examples, simulator, project_dir, notebook):
     else:
         print_green(f"  {os.path.join('.venv', 'Scripts', 'activate')}")
     if simulator == "Pennylane":
-        print("\nWhen using Pennylane there are 3 options for standard backend cpu, gpu, tensor")
+        print("\nWhen using Pennylane there are 4 options for backend cpu, gpu, tensor or qiskit")
         print("To chose use --extra followed by the backend you want to use")
     if not notebook:
         print("\nRun examples with:")
         for backend in examples:
             for example in backend["children"]:
+                file = f"{backend["name"].lower()}_{example['name']}{ext}"
                 if simulator == "Qiskit":
-                    print_green(f"  uv run {backend["name"].lower()}_{example['name']}{ext}")
+                    print_green(f"  uv run {file}")
+                elif simulator == "Pennylane":
+                    if backend["name"] == "IBM":
+                        print_green(f"  uv run --extra qiskit {file}")
+                    else:
+                        print_green(f"  uv run --extra cpu {file}")
                 else:
-                    print_green(f"  uv run --extra cpu {backend["name"].lower()}_{example['name']}{ext}")
+                    print_yellow(f"No instructions for {simulator} how did we get here?")
     print("\nPress any key to exit...")
     input()
 
