@@ -1,10 +1,10 @@
 Version:2
 Qiskit|AER: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz,image_edge_detection
-Qiskit|IBM: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz,image_edge_detection
+Qiskit|IBM: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz,image_edge_detection,dense_coding
 Qiskit|Azure: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Qiskit|Braket: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Qiskit|IPYNB_AER: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Qiskit|IPYNB_IBM: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Qiskit|IPYNB_Azure: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Qiskit|IPYNB_Braket: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
-Pennylane|default: bb84,grover,ghz,qrng,shor_code,qaoa_max_cut,dense_coding
+Pennylane|default: bb84,grover,ghz,qrng,shor_code,qaoa_max_cut,dense_coding,bernstein_vazirani
