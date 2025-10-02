@@ -213,7 +213,12 @@ class MenuNavigator:
 def hierarchical_menu(nb_mode):
     sim_menu,backend_menus = build_menu_structure(nb_mode)
     simulator_navigator = MenuNavigator(sim_menu, allow_multiple=False)
-    simulator = simulator_navigator.run()[0] # Only one item can be selected
+    simulator = simulator_navigator.run()
+    if len(simulator):
+        simulator = simulator[0]
+    else:
+        print_red("You have to select a simulator") 
+        exit()
     backend_navigator = MenuNavigator(backend_menus[simulator["name"]])
     backends = backend_navigator.run()
     return (simulator, backends)
