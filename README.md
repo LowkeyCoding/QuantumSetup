@@ -1,6 +1,6 @@
 # Quantum Computing Setup Guide
 
-Welcome to the Quantum Computing Setup Guide! This repository contains code for setting up python for quantum computing using Qiskit.
+Welcome to the Quantum Computing Setup Guide! This repository contains code for setting up python for quantum computing using Qiskit or Pennylane.
 This guide has a companion document explaning the [setup](https://zenodo.org/records/14133924).
 
 ## Easy setup
@@ -47,17 +47,22 @@ options:
   -h, --help            show this help message and exit
   --notebook            Run in notebook mode
   -n NAME, --name NAME  Set the project name
+  -s {Pennylane,Qiskit}, --simulator {Pennylane,Qiskit}
+                        Set the simulator
+  -x, --no-examples     Removes the examples prompt
 ```
 
-To create a project with a name "x", either run `qproject x` or `qproject`. If no name is supplied, you will be prompted to enter a name.
+To create a project with a name "x", either run `qproject -n x` or `qproject`. If no name is supplied, you will be prompted to enter a name.
 
-Then, you will be presented with the following menu, which can be navigated using the arrow keys, using space to select and enter to confirm the selection of examples.
+Then, you will be presented with the following menu, which can be navigated using the arrow keys, using space to select and enter to confirm the selection of simulator.
+This can be avoided by using `-s` or `--simulator` arguments to select a simulator
+![alt text](./images/simulator.png "Title")
 
+Then you will be prompted to chose examples for the backends you're intrested in to download unless the `-x` or `--no-examples` flag is set.
 When selecting a backend name in the top-level menu, all examples for that backend will be selected.
 ![alt text](./images/menu.png "Title")
 
 When expanding a backend, you will get a list of examples to choose from instead of downloading them all.
-
 ![alt text](./images/select_example.png "Title")
 
 ### After Project Setup
@@ -70,8 +75,6 @@ When exiting the terminal where the environment has been activated, the next tim
 
 #### virtual environments and git
 If you are cloning a project generated with qproject, you will have to create a virtual environment by running `uv venv` and then follow the instructions to activate the environment.
-
-### Helpful links
 
 
 ## Manual setup (without uv)
