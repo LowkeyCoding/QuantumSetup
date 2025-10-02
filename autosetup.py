@@ -210,17 +210,23 @@ class MenuNavigator:
         selected = filter(lambda x : x["selected"] or ("children" in x.keys() and len(x["children"]) > 0), menu)
         return list(selected)
 
-def hierarchical_menu(nb_mode):
-    sim_menu,backend_menus = build_menu_structure(nb_mode)
-    simulator_navigator = MenuNavigator(sim_menu, allow_multiple=False)
-    simulator = simulator_navigator.run()
-    if len(simulator):
-        simulator = simulator[0]
+def hierarchical_menu(args):
+    sim_menu,backend_menus = build_menu_structure(args.notebook)
+    simulator = ""
+    backends = []
+    if args.simulator:
+        simulator = args.simulator
     else:
-        print_red("You have to select a simulator") 
-        exit()
-    backend_navigator = MenuNavigator(backend_menus[simulator["name"]])
-    backends = backend_navigator.run()
+        simulator_navigator = MenuNavigator(sim_menu, allow_multiple=False)
+        simulator = simulator_navigator.run()
+        if len(simulator):
+            simulator = simulator[0]["name"]
+        else:
+            print_red("You have to select a simulator") 
+            exit()
+    if not args.no_examples:
+        backend_navigator = MenuNavigator(backend_menus[simulator])
+        backends = backend_navigator.run()
     return (simulator, backends)
 
 def create_project_directory(project_name):
@@ -333,6 +339,8 @@ def main():
     parser = argparse.ArgumentParser(prog='qproject', usage='%(prog)s [options]', description='Qproject is a tool to crate a basic quantum development environment.')
     parser.add_argument('--notebook', action='store_true', help='Run in notebook mode')
     parser.add_argument('-n','--name', default="", help='Set the project name')
+    parser.add_argument('-s', '--simulator', choices=['Pennylane', 'Qiskit'], help='Set the simulator: ')
+    parser.add_argument('-x','--no-examples', action='store_true', help='Removes the examples prompt')
     args = parser.parse_args()
     clear_screen()
     print("Welcome to the Quantum Project Setup!")
@@ -347,22 +355,22 @@ def main():
         project_name = get_project_name()
 
     print("\x1b[?25l") # Hide cursor
-    simulator, examples = hierarchical_menu(args.notebook)
+    simulator, examples = hierarchical_menu(args)
     print("\x1b[?25h") # show cursor
     print("Creating project directory")
     project_dir = create_project_directory(project_name)
     print("Creating .env\n")
     create_dotenv(project_dir)
     print("Downloading pyproject.toml\n")
-    download_pyproject(project_dir, simulator["name"])
+    download_pyproject(project_dir, simulator)
     print("Downloading README.md\n")
-    download_readme(simulator["name"], project_dir)
+    download_readme(simulator, project_dir)
     print("Downloading Examples")
     for backend in examples:
         for example in backend["children"]:
-            download_example(example, backend["name"],simulator["name"], project_dir, args.notebook)
+            download_example(example, backend["name"],simulator, project_dir, args.notebook)
     create_virtual_environment(project_dir)
-    guide_to_run_examples(examples, simulator["name"], project_dir, args.notebook)
+    guide_to_run_examples(examples, simulator, project_dir, args.notebook)
     
 if __name__ == "__main__":
     main()
