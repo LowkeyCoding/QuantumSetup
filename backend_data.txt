@@ -8,4 +8,4 @@ Qiskit|IPYNB_IBM: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,gh
 Qiskit|IPYNB_Azure: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Qiskit|IPYNB_Braket: bb84,bernstein_vazirani,grovers,qaoa_max_cut,qrng,shor_code,ghz
 Pennylane|default: bb84,grover,ghz,qrng,shor_code,qaoa_max_cut,dense_coding,bernstein_vazirani
-Pennylane|IBM: bb84,ghz,bernstein_vazirani,dense_coding,qrng,qaoa_max_cut
+Pennylane|IBM: bb84,ghz,bernstein_vazirani,dense_coding,qrng,qaoa_max_cut,grovers
